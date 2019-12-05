@@ -678,6 +678,7 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 			/**
 			 * 这里的registryPostProcessorBeans会包含这个beanDefinition后置处理器
 			 * {@link ConfigurationClassPostProcessor}
+			 * 在处理 ConfigurationClassPostProcessor 过程中，
 			 */
 			for (BeanDefinitionRegistryPostProcessor postProcessor : registryPostProcessorBeans) {
 				postProcessor.postProcessBeanDefinitionRegistry(registry);

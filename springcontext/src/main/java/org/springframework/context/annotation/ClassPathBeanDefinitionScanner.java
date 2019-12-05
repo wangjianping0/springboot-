@@ -38,6 +38,8 @@ import org.springframework.util.PatternMatchUtils;
  * A bean definition scanner that detects bean candidates on the classpath,
  * registering corresponding bean definitions with a given registry ({@code BeanFactory}
  * or {@code ApplicationContext}).
+ * bean definition 扫描器，主要在classpath下扫描bean候选人，注册相应的bean definition到一个指定的bean factory
+ * ，或者一个应用上下文。
  *
  * <p>Candidate classes are detected through configurable type filters. The
  * default filters include classes that are annotated with Spring's
@@ -45,9 +47,12 @@ import org.springframework.util.PatternMatchUtils;
  * {@link org.springframework.stereotype.Repository @Repository},
  * {@link org.springframework.stereotype.Service @Service}, or
  * {@link org.springframework.stereotype.Controller @Controller} stereotype.
+ * 候选class通过可配置的类型filter被检测。默认的filter就是包含下面的注解的那些类，
+ * component、repository、service、controller。
  *
  * <p>Also supports Java EE 6's {@link javax.annotation.ManagedBean} and
  * JSR-330's {@link javax.inject.Named} annotations, if available.
+ * 也支持java ee 6的 managedBean 和 jsr-330的Named 注解。
  *
  * @author Mark Fisher
  * @author Juergen Hoeller
@@ -100,6 +105,8 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 	 * normal {@code BeanFactory} implementations are not.
 	 * @param registry the {@code BeanFactory} to load bean definitions into, in the form
 	 * of a {@code BeanDefinitionRegistry}
+	 *
+	 * 下面这个可以看出，默认扫描 component、repository、service、controller注解
 	 * @param useDefaultFilters whether to include the default filters for the
 	 * {@link org.springframework.stereotype.Component @Component},
 	 * {@link org.springframework.stereotype.Repository @Repository},
@@ -240,6 +247,12 @@ public class ClassPathBeanDefinitionScanner extends ClassPathScanningCandidateCo
 		Assert.notEmpty(basePackages, "At least one base package must be specified");
 		Set<BeanDefinitionHolder> beanDefinitions = new LinkedHashSet<BeanDefinitionHolder>();
 		for (String basePackage : basePackages) {
+			/**
+			 * 扫描候选的component，注意，这里的名称叫CandidateComponent，所以这里真的就只扫描了@component或者基于它的
+			 * 那几个。（service、controller那些）
+			 * 这里是没包含下面这些：
+			 * 1、propertysource注解的
+			 */
 			Set<BeanDefinition> candidates = findCandidateComponents(basePackage);
 			for (BeanDefinition candidate : candidates) {
 				ScopeMetadata scopeMetadata = this.scopeMetadataResolver.resolveScopeMetadata(candidate);

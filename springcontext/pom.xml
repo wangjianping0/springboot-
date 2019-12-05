@@ -122,6 +122,12 @@
             <artifactId>spring-aop</artifactId>
             <version>4.0.0.BOOTSTRAP-SNAPSHOT</version>
             <scope>compile</scope>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring-beans</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!--<dependency>-->
             <!--<groupId>org.springframework</groupId>-->

@@ -68,36 +68,42 @@ public class AnnotationConfigUtils {
 			"org.springframework.context.annotation.internalConfigurationBeanNameGenerator";
 
 	/**
+	 * 用来处理 {@link org.springframework.beans.factory.annotation.Autowired}的注解处理器
 	 * The bean name of the internally managed Autowired annotation processor.
 	 */
 	public static final String AUTOWIRED_ANNOTATION_PROCESSOR_BEAN_NAME =
 			"org.springframework.context.annotation.internalAutowiredAnnotationProcessor";
 
 	/**
+	 * 用来处理Required注解
 	 * The bean name of the internally managed Required annotation processor.
 	 */
 	public static final String REQUIRED_ANNOTATION_PROCESSOR_BEAN_NAME =
 			"org.springframework.context.annotation.internalRequiredAnnotationProcessor";
 
 	/**
+	 * 处理jsr-250注解
 	 * The bean name of the internally managed JSR-250 annotation processor.
 	 */
 	public static final String COMMON_ANNOTATION_PROCESSOR_BEAN_NAME =
 			"org.springframework.context.annotation.internalCommonAnnotationProcessor";
 
 	/**
+	 * 处理{@link org.springframework.scheduling.annotation.Scheduled}注解
 	 * The bean name of the internally managed Scheduled annotation processor.
 	 */
 	public static final String SCHEDULED_ANNOTATION_PROCESSOR_BEAN_NAME =
 			"org.springframework.context.annotation.internalScheduledAnnotationProcessor";
 
 	/**
+	 * 处理 {@link org.springframework.scheduling.annotation.Async}
 	 * The bean name of the internally managed Async annotation processor.
 	 */
 	public static final String ASYNC_ANNOTATION_PROCESSOR_BEAN_NAME =
 			"org.springframework.context.annotation.internalAsyncAnnotationProcessor";
 
 	/**
+	 * 处理 {@link org.aspectj.lang.annotation.Aspect}
 	 * The bean name of the internally managed AspectJ async execution aspect.
 	 */
 	public static final String ASYNC_EXECUTION_ASPECT_BEAN_NAME =
@@ -222,6 +228,15 @@ public class AnnotationConfigUtils {
 		return beanDefs;
 	}
 
+	/**
+	 * 注册一个后置处理器；因为这里默认后置处理器的role是框架自身的bean definition，
+	 * 所以直接写死了，那这里说明，调用这个方法注册的，一定是框架自身的类。
+	 * 这里注册一个bean definition，然后返回一个bean definition包装类。
+	 * @param registry
+	 * @param definition
+	 * @param beanName
+	 * @return
+	 */
 	private static BeanDefinitionHolder registerPostProcessor(
 			BeanDefinitionRegistry registry, RootBeanDefinition definition, String beanName) {
 

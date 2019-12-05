@@ -32,15 +32,27 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
  * particular {@link org.springframework.context.annotation.Configuration
  * <code>@Configuration</code>} -annotated classes, but also plain
  * {@link org.springframework.stereotype.Component <code>@Component</code>} classes and
- * JSR-330 compliant classes using {@code javax.inject} annotations. Allows for
+ * JSR-330 compliant classes using {@code javax.inject} annotations.
+ *
+ * 翻译：{@link EmbeddedWebApplicationContext}，接收被注解的class作为输入源
+ * （类似于以前的spring容器需要一个xml一样），尤其是{@link org.springframework.context.annotation.Configuration}
+ * 注解的类，但是也可以是普通的{@link org.springframework.stereotype.Component}和{@code javax.inject}注解的类
+ *
+ *
+ * Allows for
  * registering classes one by one (specifying class names as config location) as well as
  * for classpath scanning (specifying base packages as config location).
- * 
+ *
+ * 允许一个一个地注册类（手动指定类名），或者通过classpath扫描（指定base包名作为配置地址)
  * <p>
  * Note: In case of multiple {@code @Configuration} classes, later {@code @Bean}
  * definitions will override ones defined in earlier loaded files. This can be leveraged
  * to deliberately override certain bean definitions via an extra Configuration class.
- * 
+ *
+ * 在有多个{@code @Configuration}类时，后面的@bean方法定义会覆盖前面的。因此，可以通过这个方式，通过外部的
+ * Configuration类去覆盖特定的bean definition。（就像可以通过命令行参数来覆盖spring boot的application.properties
+ * 中的一样）
+ *
  * @author Phillip Webb
  * @since 4.0
  * @see #register(Class...)
@@ -50,9 +62,14 @@ import org.springframework.web.context.support.AnnotationConfigWebApplicationCon
  */
 public class AnnotationConfigEmbeddedWebApplicationContext extends
 		EmbeddedWebApplicationContext {
-
+	/**
+	 * 一个精准加载类定义
+	 */
 	private final AnnotatedBeanDefinitionReader reader;
 
+	/**
+	 * 一个用于类路径扫描，批量装载
+	 */
 	private final ClassPathBeanDefinitionScanner scanner;
 
 	/**
@@ -61,6 +78,10 @@ public class AnnotationConfigEmbeddedWebApplicationContext extends
 	 * refreshed}.
 	 */
 	public AnnotationConfigEmbeddedWebApplicationContext() {
+		/**
+		 * 这里有点叼啊，还在构造函数里就把this传出去了，并发编程实战里提到了，这可能会造成问题，意思就是可能把一个还没有
+		 * 构造完成的对象给传递出去了，要是泄露到其他线程就糟了
+		 */
 		this.reader = new AnnotatedBeanDefinitionReader(this);
 		this.scanner = new ClassPathBeanDefinitionScanner(this);
 	}
@@ -69,6 +90,8 @@ public class AnnotationConfigEmbeddedWebApplicationContext extends
 	 * Create a new {@link AnnotationConfigEmbeddedWebApplicationContext}, deriving bean
 	 * definitions from the given annotated classes and automatically refreshing the
 	 * context.
+	 * 创建一个新的{@link AnnotationConfigEmbeddedWebApplicationContext}，从指定的注解class中扩展bean定义，
+	 * 并自动刷新上下文
 	 * @param annotatedClasses one or more annotated classes, e.g. {@link Configuration
 	 * <code>@Configuration</code>} classes
 	 */

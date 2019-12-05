@@ -295,8 +295,21 @@ public class SpringApplication {
 		if (context instanceof ConfigurableApplicationContext) {
 			applyInitializers((ConfigurableApplicationContext) context);
 		}
+		/**
+		 * 这里面会去load beanDefinition，如果是通过spring boot方式启动，这里只会load 启动的那个类
+		 * 也就是这里的source参数，而这里的source参数呢，就是我们一般启动spring boot的包含main方法的那个类
+		 */
 		load(context, this.sources);
+
+		/**
+		 * 加载上下文
+		 */
 		refresh(context);
+
+		/**
+		 * 加载完成后，运行一些listener，可以供用户在上下文准备ok后，
+		 * 程序最后启动前，做一些事情，比如预热缓存
+		 */
 		runCommandLineRunners(context, args);
 		return context;
 	}

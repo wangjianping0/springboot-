@@ -193,7 +193,7 @@ class ConfigurationClassParser {
 			return;
 		}
 
-		// recursively process the configuration class and its superclass hierarchy
+		// recursively process the configuration class and its superclass hierarchy 这里递归处理父类
 		do {
 			metadata = doProcessConfigurationClass(configClass, metadata);
 		}
@@ -278,7 +278,7 @@ class ConfigurationClassParser {
 			}
 		}
 
-		// process any @Import annotations
+		// process any @Import annotations 这里处理import，因为启动类上有两个enable注解，这里直接获取到了这两个
 		Set<String> imports = getImports(metadata.getClassName(), null, new HashSet<String>());
 		if (!CollectionUtils.isEmpty(imports)) {
 			processImport(configClass, imports.toArray(new String[imports.size()]), true);
@@ -300,7 +300,7 @@ class ConfigurationClassParser {
 			configClass.addBeanMethod(new BeanMethod(methodMetadata, configClass));
 		}
 
-		// process superclass, if any
+		// process superclass, if any;每个java类都会走这，因为继承了Object
 		if (metadata.hasSuperClass()) {
 			String superclass = metadata.getSuperClassName();
 			if (this.knownSuperclasses.add(superclass)) {
@@ -385,6 +385,10 @@ class ConfigurationClassParser {
 		else {
 			this.importStack.push(configClass);
 			AnnotationMetadata importingClassMetadata = configClass.getMetadata();
+			/**
+			 * 这里classesToImport一般就是那种@import注解里面的属性中的类，
+			 * 表示哪些类要导入。就和以前的xml中指定的<import></>中要导入的xml文件一样
+			 */
 			for (String candidate : classesToImport) {
 				ConfigurationMetadataReader reader = new ConfigurationMetadataReader(candidate);
 				if (reader.match(ImportSelector.class)) {
