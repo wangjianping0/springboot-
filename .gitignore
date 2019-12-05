@@ -1,0 +1,13 @@
+.gradle
+*.sw?
+.#*
+*#
+/build
+.classpath
+.project
+.settings
+bin
+build
+target
+.idea
+*.iml
