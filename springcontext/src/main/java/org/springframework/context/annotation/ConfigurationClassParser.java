@@ -143,6 +143,10 @@ class ConfigurationClassParser {
 		this.resourceLoader = resourceLoader;
 		this.registry = registry;
 		this.beanNameGenerator = componentScanBeanNameGenerator;
+		/**
+		 * 这里比较有意思，一个configuration注解的处理类，为啥要默认弄一个component scan的解析器呢，
+		 * 因为一般在spring boot中，main启动类都会标注这个component scan注解的原因吧
+		 */
 		this.componentScanParser = new ComponentScanAnnotationParser(
 				resourceLoader, environment, componentScanBeanNameGenerator, registry);
 	}

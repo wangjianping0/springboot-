@@ -11,6 +11,7 @@
 	</prerequisites>
 	<modules>
 		<module>springbeans</module>
+		<module>springcore</module>
 		<module>springcontext</module>
 		<module>spring-bootstrap</module>
 		<module>spring-bootstrap-service</module>

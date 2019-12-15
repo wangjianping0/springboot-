@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.spring-boot.learn</groupId>
-    <artifactId>spring-beans</artifactId>
+    <artifactId>springbeans</artifactId>
     <version>1.0-SNAPSHOT</version>
 
-    <name>spring-beans</name>
+    <name>springbeans</name>
     <!-- FIXME change it to the project's website -->
     <url>http://www.example.com</url>
 
@@ -19,11 +19,16 @@
     </properties>
 
     <dependencies>
+        <!--<dependency>-->
+            <!--<groupId>org.springframework</groupId>-->
+            <!--<artifactId>spring-core</artifactId>-->
+            <!--<version>4.0.0.BOOTSTRAP-SNAPSHOT</version>-->
+            <!--<scope>compile</scope>-->
+        <!--</dependency>-->
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>4.0.0.BOOTSTRAP-SNAPSHOT</version>
-            <scope>compile</scope>
+            <groupId>com.spring-boot.learn</groupId>
+            <artifactId>springcore</artifactId>
+            <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>javax.el</groupId>
@@ -84,4 +89,5 @@
             </plugins>
         </pluginManagement>
     </build>
+
 </project>

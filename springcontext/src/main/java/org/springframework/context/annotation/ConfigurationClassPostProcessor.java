@@ -292,7 +292,8 @@ public class ConfigurationClassPostProcessor implements BeanDefinitionRegistryPo
 		}
 
 		/**
-		 * 解析每个@configuration 类
+		 * 解析每个@configuration 类，configCandidates 变量是找到的所有的configuration类的集合
+		 * 这里，只创建了一个configurationClassParser，来处理所有的配置候选类
 		 */
 		// Parse each @Configuration class
 		ConfigurationClassParser parser = new ConfigurationClassParser(
