@@ -1,4 +1,4 @@
-package com.learn;
+package org.springframework.bootstrap.sample.simple.dto;
 
 import lombok.Data;
 

@@ -23,6 +23,7 @@ public class SampleController {
 	@RequestMapping("/foo")
 	@ResponseBody
 	public String foo() {
-		throw new IllegalArgumentException("Server error");
+//		throw new IllegalArgumentException("Server error");
+		return "bar";
 	}
 }
