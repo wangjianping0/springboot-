@@ -9,14 +9,26 @@
 	<prerequisites>
 		<maven>3.0.0</maven>
 	</prerequisites>
+
 	<modules>
+        <!--以下三个module的代码是这样来得，
+        本spring boot版本依赖的spring为4.0.0的一个snapshot版本，
+        我是从对应的maven源码中拷贝出来的，因此，和原有的依赖比起来，是没有任何改变的
+        这样，方便我们添加注释-->
 		<module>springbeans</module>
 		<module>springcore</module>
 		<module>springcontext</module>
+
+        <!--spring boot核心代码-->
 		<module>spring-bootstrap</module>
+        <!--spring boot自动配置相关代码，依赖上面的spring-bootstrap-->
 		<module>spring-bootstrap-service</module>
-		<module>spring-bootstrap-applications</module>
-		<module>spring-bootstrap-launcher</module>
+
+        <!--本module的功能是，在我们spring boot应用打包成fat jar或者war包后，
+        通过本工程中的代码来进行启动。idea中调试暂时用不到这个，在parent中先注释掉。-->
+		<!--<module>spring-bootstrap-launcher</module>-->
+
+        <!--各种sample，和平时web开发最像的是，spring-bootstrap-service-sample-->
 		<module>spring-bootstrap-samples</module>
 	</modules>
 	<properties>
