@@ -1099,4 +1099,15 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 		}
 	}
 
+	/**
+	 * modified
+	 * @return
+	 */
+	@Override
+	public List<BeanDefinition> getBeanDefinitionList(){
+        ArrayList<BeanDefinition> list = new ArrayList<>();
+        list.addAll(beanDefinitionMap.values());
+        return list;
+	}
+
 }

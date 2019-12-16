@@ -20,6 +20,8 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 
+import java.util.List;
+
 /**
  * Configuration interface to be implemented by most listable bean factories.
  * In addition to {@link ConfigurableBeanFactory}, it provides facilities to
@@ -130,4 +132,5 @@ public interface ConfigurableListableBeanFactory
 	 */
 	void preInstantiateSingletons() throws BeansException;
 
+	List<BeanDefinition> getBeanDefinitionList();
 }

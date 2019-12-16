@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -37,10 +38,7 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.beans.factory.config.AutowireCapableBeanFactory;
-import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
-import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
+import org.springframework.beans.factory.config.*;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.beans.factory.support.BeanDefinitionRegistryPostProcessor;
 import org.springframework.beans.factory.support.MergedBeanDefinitionPostProcessor;
@@ -84,6 +82,7 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 
 /**
@@ -127,6 +126,7 @@ import org.springframework.util.ObjectUtils;
  * @see org.springframework.context.ApplicationListener
  * @see org.springframework.context.MessageSource
  */
+@Slf4j
 public abstract class AbstractApplicationContext extends DefaultResourceLoader
 		implements ConfigurableApplicationContext, DisposableBean {
 
@@ -487,6 +487,17 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
 				registerListeners();
 
 				// Instantiate all remaining (non-lazy-init) singletons.
+				List<BeanDefinition> beanDefinitionList = beanFactory.getBeanDefinitionList();
+                ArrayList<BeanDefinition> arrayList = new ArrayList<>();
+                for (BeanDefinition beanDefinition : beanDefinitionList) {
+                    boolean b = beanDefinition.getDependsOn() != null
+                            && beanDefinition.getDependsOn().length > 0;
+                    if (b) {
+                        arrayList.add(beanDefinition);
+                    }
+                }
+
+				log.info("list with depends on:{}",arrayList);
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.
