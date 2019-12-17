@@ -9,17 +9,27 @@ spring boot项目中克隆后，回退到了第一个版本，本工程即为那
 软件架构说明
 
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
 #### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
+如果遇到maven依赖下载不下来，请查看是否是snapshot类型的依赖，如果是的话，可以考虑在maven的
+settings.xml中添加以下部分：
+  <profiles>
+    <profile>
+        <id>allow-snapshots</id>
+        <activation>
+            <activeByDefault>true</activeByDefault>
+        </activation>
+        <repositories>
+            <repository>
+                <id>spring-snapshots</id>
+                <name>Spring Snapshots</name>
+                <url>http://maven.springframework.org/snapshot</url>
+                <snapshots>
+                    <enabled>true</enabled>
+                </snapshots>
+            </repository>
+        </repositories>
+    </profile>
+</profiles>
 
 #### 参与贡献
 
