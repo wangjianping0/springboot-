@@ -554,6 +554,10 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				new ConstructorResolver(this).resolveFactoryMethodIfPossible(mbd);
 			}
 		}
+		/**
+		 * 这里判断下当前beanDefinition是否能够资格做一个候选bean，即使用
+		 * org.springframework.beans.factory.config.BeanDefinition#isAutowireCandidate()判断
+		 */
 		return getAutowireCandidateResolver().isAutowireCandidate(
 				new BeanDefinitionHolder(mbd, beanName, getAliases(beanName)), descriptor);
 	}
@@ -892,8 +896,16 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 	protected Map<String, Object> findAutowireCandidates(
 			String beanName, Class<?> requiredType, DependencyDescriptor descriptor) {
 
+		/**
+		 * 获取候选bean的名称
+		 */
 		String[] candidateNames = BeanFactoryUtils.beanNamesForTypeIncludingAncestors(
 				this, requiredType, true, descriptor.isEager());
+		/**
+		 * 判断候选bean的类型requiredType是不是那几个ApplicationContext、BeanFactory、ResourceLoader之类的，
+		 * 如果是的话，这里直接把this返回去；
+		 * 毕竟当前对象this，就是ApplicationContext，实现了诸多接口的。
+		 */
 		Map<String, Object> result = new LinkedHashMap<String, Object>(candidateNames.length);
 		for (Class<?> autowiringType : this.resolvableDependencies.keySet()) {
 			if (autowiringType.isAssignableFrom(requiredType)) {
@@ -905,9 +917,21 @@ public class DefaultListableBeanFactory extends AbstractAutowireCapableBeanFacto
 				}
 			}
 		}
+		/**
+		 * 获取所有的候选bean
+		 */
 		for (String candidateName : candidateNames) {
+			/**
+			 * 这里的isAutowireCandidate会去判断候选bean是否满足目标依赖的要求
+			 * 比如，如果本bean是不能作为候选bean的话，会跳过
+			 */
 			if (!candidateName.equals(beanName) && isAutowireCandidate(candidateName, descriptor)) {
-				result.put(candidateName, getBean(candidateName));
+				/**
+				 * 这里去beanfactory获取候选bean，如果是第一次获取，则会创建；
+				 * 到这里，形成一个递归调用
+				 */
+				Object bean = getBean(candidateName);
+				result.put(candidateName, bean);
 			}
 		}
 		return result;

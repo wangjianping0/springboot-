@@ -7,8 +7,12 @@ import org.springframework.bootstrap.sample.xml.service.HelloWorldService;
 
 public class XmlBootstrapApplication implements CommandLineRunner {
 
-	@Autowired
+//	@Autowired
 	private HelloWorldService helloWorldService;
+
+	public XmlBootstrapApplication(HelloWorldService helloWorldService) {
+		this.helloWorldService = helloWorldService;
+	}
 
 	@Override
 	public void run(String... args) {
@@ -17,6 +21,7 @@ public class XmlBootstrapApplication implements CommandLineRunner {
 
 	public static void main(String[] args) throws Exception {
 		// TODO: to make this a pure XML example, will need <bootstrap:auto-configure/>
-		SpringApplication.run("classpath:/META-INF/application-context.xml", args);
+//		SpringApplication.run("classpath:/META-INF/application-context.xml", args);
+		SpringApplication.run("classpath:/META-INF/application-context1.xml", args);
 	}
 }

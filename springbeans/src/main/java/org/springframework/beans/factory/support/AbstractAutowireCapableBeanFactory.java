@@ -38,6 +38,7 @@ import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -114,6 +115,7 @@ import org.springframework.util.StringUtils;
  * @see DefaultListableBeanFactory
  * @see BeanDefinitionRegistry
  */
+@Slf4j
 public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFactory
 		implements AutowireCapableBeanFactory {
 
@@ -456,6 +458,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		try {
+			/**
+			 * 这里的注释有点意思，给bean后置处理器一个机会，一个偷天换日的机会（返回一个代理来以假乱真）
+			 * 注意这里，直接就返回了
+			 */
 			// Give BeanPostProcessors a chance to return a proxy instead of the target bean instance.
 			Object bean = resolveBeforeInstantiation(beanName, mbd);
 			if (bean != null) {
@@ -509,6 +515,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
+		/**
+		 * 这里把单例bean缓存起来，好方便去解决循环依赖问题
+		 */
 		// Eagerly cache singletons to be able to resolve circular references
 		// even when triggered by lifecycle interfaces like BeanFactoryAware.
 		boolean earlySingletonExposure = (mbd.isSingleton() && this.allowCircularReferences &&
@@ -528,6 +537,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Initialize the bean instance.
 		Object exposedObject = bean;
 		try {
+			log.info("populate bean {}",beanName);
 			populateBean(beanName, mbd, instanceWrapper);
 			if (exposedObject != null) {
 				exposedObject = initializeBean(beanName, exposedObject, mbd);
@@ -908,13 +918,19 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	protected Object applyBeanPostProcessorsBeforeInstantiation(Class beanClass, String beanName)
 			throws BeansException {
 
+		ArrayList<BeanPostProcessor> filteredList = new ArrayList<>();
 		for (BeanPostProcessor bp : getBeanPostProcessors()) {
 			if (bp instanceof InstantiationAwareBeanPostProcessor) {
-				InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-				Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
-				if (result != null) {
-					return result;
-				}
+				filteredList.add(bp);
+			}
+		}
+
+		logger.info("filteredList is :" + filteredList);
+		for (BeanPostProcessor beanPostProcessor : filteredList) {
+			InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
+			Object result = ibp.postProcessBeforeInstantiation(beanClass, beanName);
+			if (result != null) {
+				return result;
 			}
 		}
 		return null;
@@ -1078,7 +1094,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	 */
 	protected void populateBean(String beanName, RootBeanDefinition mbd, BeanWrapper bw) {
 		PropertyValues pvs = mbd.getPropertyValues();
-
+		if (!pvs.isEmpty()) {
+			log.warn("pvs is not null,{}",pvs);
+		}
 		if (bw == null) {
 			if (!pvs.isEmpty()) {
 				throw new BeanCreationException(
@@ -1134,13 +1152,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		if (hasInstAwareBpps || needsDepCheck) {
 			PropertyDescriptor[] filteredPds = filterPropertyDescriptorsForDependencyCheck(bw, mbd.allowCaching);
 			if (hasInstAwareBpps) {
+				ArrayList<BeanPostProcessor> filteredList = new ArrayList<>();
 				for (BeanPostProcessor bp : getBeanPostProcessors()) {
 					if (bp instanceof InstantiationAwareBeanPostProcessor) {
-						InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-						pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
-						if (pvs == null) {
-							return;
-						}
+						filteredList.add(bp);
+
+					}
+				}
+
+				log.info("filtered InstantiationAwareBeanPostProcessor list:{}",filteredList);
+				for (BeanPostProcessor beanPostProcessor : filteredList) {
+					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
+					log.info("{} start to process {}",beanPostProcessor,beanName);
+					pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
+					if (beanName.equalsIgnoreCase("SampleController")) {
+						log.info("after process, bean :{}",bw.getWrappedInstance());
+					}
+					if (pvs == null) {
+						return;
 					}
 				}
 			}

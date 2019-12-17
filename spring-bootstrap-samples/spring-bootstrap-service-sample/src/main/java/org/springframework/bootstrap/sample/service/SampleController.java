@@ -11,8 +11,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class SampleController {
 
-	@Autowired
+//	@Autowired
 	private HelloWorldService helloWorldService;
+
+	@Autowired
+	public SampleController(HelloWorldService helloWorldService) {
+	}
 
 	@RequestMapping("/")
 	@ResponseBody
