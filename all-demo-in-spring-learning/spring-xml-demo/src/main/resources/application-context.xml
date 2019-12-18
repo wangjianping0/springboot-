@@ -6,9 +6,15 @@
 				http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-	<bean id="testService" class="org.springframework.simple.TestService"/>
+	<bean name="testService" class="org.springframework.simple.TestService" />
+
 	<bean id="testController" class="org.springframework.simple.TestController">
 		<constructor-arg ref="testService"/>
 	</bean>
+	<!--<bean id="testByPropertyController" class="org.springframework.simple.TestByPropertyController" abstract="true" >-->
+	<bean id="testByPropertyController" class="org.springframework.simple.TestByPropertyController"  >
+		<property name="testService" ref="testService"/>
+	</bean>
+
 
 </beans>

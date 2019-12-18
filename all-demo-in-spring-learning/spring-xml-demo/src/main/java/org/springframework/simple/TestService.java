@@ -1,4 +1,4 @@
 package org.springframework.simple;
 
-public class TestService {
+public class TestService implements ITestService{
 }

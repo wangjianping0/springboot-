@@ -1,5 +1,7 @@
 package org.springframework.simple;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 public class TestController {
 
     TestService testService;
