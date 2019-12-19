@@ -1,11 +1,16 @@
 package org.springframework.simple.byconstructor;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.simple.ITestService;
 import org.springframework.simple.TestService;
 import org.springframework.util.Assert;
+
+import java.util.List;
 
 /**
  * desc:
@@ -64,6 +69,11 @@ public class ManualRegisterBeanDefinitionDemoByConstructor {
         log.info("testService bean:{}",testService);
 
         Assert.isTrue(bean.getTestService() == testService);
+
+
+        List<BeanDefinition> beanDefinitionList = factory.getBeanDefinitionList();
+        log.info("bean definition list:{}", JSON.toJSONString(beanDefinitionList, SerializerFeature.PrettyFormat));
+
     }
 
 
