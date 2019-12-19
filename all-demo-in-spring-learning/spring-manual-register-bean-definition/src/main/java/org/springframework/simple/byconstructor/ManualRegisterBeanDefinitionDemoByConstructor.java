@@ -48,10 +48,11 @@ public class ManualRegisterBeanDefinitionDemoByConstructor {
          */
 //        DefaultBeanNameGenerator generator = new DefaultBeanNameGenerator();
         AnnotationBeanNameGenerator generator = new AnnotationBeanNameGenerator();
-        factory.registerBeanDefinition(generator.generateBeanName(iTestServiceBeanDefinition,factory),
-                iTestServiceBeanDefinition);
-        factory.registerBeanDefinition(generator.generateBeanName(iTestControllerBeanDefinition,factory),
-                iTestControllerBeanDefinition);
+        String beanNameForTestService = generator.generateBeanName(iTestServiceBeanDefinition, factory);
+        factory.registerBeanDefinition(beanNameForTestService, iTestServiceBeanDefinition);
+
+        String beanNameForTestController = generator.generateBeanName(iTestControllerBeanDefinition, factory);
+        factory.registerBeanDefinition(beanNameForTestController, iTestControllerBeanDefinition);
 
         /**
          * 4. 获取bean
