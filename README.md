@@ -3,16 +3,15 @@
 #### 介绍
 spring boot项目中克隆后，回退到了第一个版本，本工程即为那时的代码，提交时间是2013年4月。
 依赖的spring 版本是spring 4.0.0.BOOTSTRAP-SNAPSHOT
-本工程对代码进行了注释，方便阅读
-
-#### 软件架构
-软件架构说明
+本工程对代码进行了注释，方便阅读；本工程会持续更新，如果fork到自己的仓库后，需要拉取我这边最新的注释，
+可以在自己仓库新增一个远端仓库（即我这边），然后拉取最新的注释，请自行搜索相关方法
 
 
 #### 使用说明
 如果遇到maven依赖下载不下来，请查看是否是snapshot类型的依赖，如果是的话，可以考虑在maven的
 settings.xml中添加以下部分：
-  <profiles>
+```xml
+ <profiles>
     <profile>
         <id>allow-snapshots</id>
         <activation>
@@ -30,6 +29,8 @@ settings.xml中添加以下部分：
         </repositories>
     </profile>
 </profiles>
+```
+ 
 
 #### 参与贡献
 
