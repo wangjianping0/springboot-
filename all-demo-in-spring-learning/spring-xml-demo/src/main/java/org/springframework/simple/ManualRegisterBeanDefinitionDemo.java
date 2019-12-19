@@ -14,6 +14,13 @@ import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 @Slf4j
 public class ManualRegisterBeanDefinitionDemo {
     public static void main(String[] args) {
+        wireDependencyByConstructor();
+    }
+
+    /**
+     * 通过构造器的方式来注入依赖
+     */
+    private static void wireDependencyByConstructor() {
         DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
         GenericBeanDefinition iTestServiceBeanDefinition = (GenericBeanDefinition) BeanDefinitionBuilder.genericBeanDefinition(TestService.class).getBeanDefinition();
         log.info("iTestServiceBeanDefinition:{}",iTestServiceBeanDefinition);
@@ -30,4 +37,7 @@ public class ManualRegisterBeanDefinitionDemo {
         TestController bean = factory.getBean(TestController.class);
         log.info("{}",bean);
     }
+
+
+
 }

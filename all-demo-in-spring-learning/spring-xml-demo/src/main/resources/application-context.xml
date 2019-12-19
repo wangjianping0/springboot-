@@ -8,7 +8,7 @@
 
 	<bean name="testService" class="org.springframework.simple.TestService" />
 
-	<bean id="testController" class="org.springframework.simple.TestController">
+	<bean id="testController" class="org.springframework.simple.byconstructor.TestControllerByConstructor">
 		<constructor-arg ref="testService"/>
 	</bean>
 	<!--<bean id="testByPropertyController" class="org.springframework.simple.TestByPropertyController" abstract="true" >-->

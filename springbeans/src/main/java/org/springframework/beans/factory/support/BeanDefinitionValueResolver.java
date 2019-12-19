@@ -320,6 +320,10 @@ class BeanDefinitionValueResolver {
 				return this.beanFactory.getParentBeanFactory().getBean(refName);
 			}
 			else {
+				/**
+				 * 通过xml <bean> <constructor-arg></></>时，如果<constructor-arg>引用了一个bean，就会到这来
+				 * 这里会去beanFactory查找对应的bean
+				 */
 				Object bean = this.beanFactory.getBean(refName);
 				this.beanFactory.registerDependentBean(refName, this.beanName);
 				return bean;
