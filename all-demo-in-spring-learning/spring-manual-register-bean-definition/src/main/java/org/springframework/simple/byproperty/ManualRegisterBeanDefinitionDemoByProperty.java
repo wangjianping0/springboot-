@@ -1,7 +1,5 @@
 package org.springframework.simple.byproperty;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -69,7 +67,6 @@ public class ManualRegisterBeanDefinitionDemoByProperty {
         Assert.isTrue(bean.getT() == testService);
 
         List<BeanDefinition> beanDefinitionList = factory.getBeanDefinitionList();
-        log.info("bean definition list:{}", JSON.toJSONString(beanDefinitionList, SerializerFeature.PrettyFormat,SerializerFeature.DisableCircularReferenceDetect));
     }
 
 

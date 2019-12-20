@@ -1,12 +1,16 @@
 package org.springframework.simple.byconstructor;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.*;
 import org.springframework.context.annotation.AnnotationBeanNameGenerator;
 import org.springframework.simple.ITestService;
 import org.springframework.simple.TestService;
+import org.springframework.simple.beandefinition.JsonBeanDefinitionReader;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -32,30 +36,25 @@ public class ManualRegisterBeanDefinitionDemoByConstructor {
          * 1：生成bean factory
          */
         DefaultListableBeanFactory factory = new DefaultListableBeanFactory();
+
         /**
-         * 2. 构造bean definition，并在bean definition中表达bean之间的依赖关系
+         * 2. 获取bean definition列表
          */
-        GenericBeanDefinition iTestServiceBeanDefinition = (GenericBeanDefinition) BeanDefinitionBuilder
-                .genericBeanDefinition(TestService.class).getBeanDefinition();
-        log.info("iTestServiceBeanDefinition:{}",iTestServiceBeanDefinition);
-
-        GenericBeanDefinition iTestControllerBeanDefinition = (GenericBeanDefinition) BeanDefinitionBuilder
-                .genericBeanDefinition(TestControllerByConstructor.class)
-                .addConstructorArgReference("testService")
-                .addConstructorArgValue("wire by constructor")
-                .getBeanDefinition();
-
+        List<GenericBeanDefinition> list = JsonBeanDefinitionReader.parseBeanDefinitionsFromJson("beanDefinition.json");
+        if (CollectionUtils.isEmpty(list)) {
+            return;
+        }
 
         /**
          * 3. 注册bean definition
          */
-//        DefaultBeanNameGenerator generator = new DefaultBeanNameGenerator();
         AnnotationBeanNameGenerator generator = new AnnotationBeanNameGenerator();
-        String beanNameForTestService = generator.generateBeanName(iTestServiceBeanDefinition, factory);
-        factory.registerBeanDefinition(beanNameForTestService, iTestServiceBeanDefinition);
+        for (GenericBeanDefinition beanDefinition : list) {
+            String beanName = generator.generateBeanName(beanDefinition, factory);
+            factory.registerBeanDefinition(beanName, beanDefinition);
+        }
 
-        String beanNameForTestController = generator.generateBeanName(iTestControllerBeanDefinition, factory);
-        factory.registerBeanDefinition(beanNameForTestController, iTestControllerBeanDefinition);
+
 
         /**
          * 4. 获取bean
@@ -70,7 +69,7 @@ public class ManualRegisterBeanDefinitionDemoByConstructor {
 
 
         List<BeanDefinition> beanDefinitionList = factory.getBeanDefinitionList();
-        log.info("bean definition list:{}", beanDefinitionList);
+        log.info("bean definition list:{}", JSON.toJSONString(beanDefinitionList, SerializerFeature.PrettyFormat));
 
     }
 

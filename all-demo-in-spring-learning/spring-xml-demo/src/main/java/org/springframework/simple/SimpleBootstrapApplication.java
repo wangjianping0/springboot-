@@ -12,13 +12,13 @@ public class SimpleBootstrapApplication  {
 
 	public static void main(String[] args) throws Exception {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(new String[]{"classpath:application-context.xml"},false);
-        context.setAllowBeanDefinitionOverriding(false);
+        context.setAllowBeanDefinitionOverriding(true);
 		context.refresh();
 
-        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
-        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-        beanDefinition.setBeanClass(String.class);
-        beanFactory.registerBeanDefinition("testService", beanDefinition);
+//        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
+//        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+//        beanDefinition.setBeanClass(String.class);
+//        beanFactory.registerBeanDefinition("testService", beanDefinition);
 
 
 //		TestController testController = (TestController) context.getBean("testController");

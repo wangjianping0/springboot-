@@ -42,9 +42,14 @@ import org.springframework.util.ObjectUtils;
  */
 public class ConstructorArgumentValues {
 
-	private final Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<Integer, ValueHolder>(0);
+//	private final Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<Integer, ValueHolder>(0);
+	private  Map<Integer, ValueHolder> indexedArgumentValues = new LinkedHashMap<Integer, ValueHolder>(0);
 
-	private final List<ValueHolder> genericArgumentValues = new LinkedList<ValueHolder>();
+    public void setIndexedArgumentValues(Map<Integer, ValueHolder> indexedArgumentValues) {
+        this.indexedArgumentValues = indexedArgumentValues;
+    }
+
+    private final List<ValueHolder> genericArgumentValues = new LinkedList<ValueHolder>();
 
 
 	/**
