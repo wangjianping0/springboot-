@@ -8,13 +8,16 @@
 
 	<bean name="testService" class="org.springframework.simple.TestService" />
 
-	<bean id="testController" class="org.springframework.simple.byconstructor.TestControllerByConstructor">
+	<bean id="testController" class="org.springframework.simple.TestController">
 		<constructor-arg ref="testService"/>
 	</bean>
 	<!--<bean id="testByPropertyController" class="org.springframework.simple.TestByPropertyController" abstract="true" >-->
 	<bean id="testByPropertyController" class="org.springframework.simple.TestByPropertyController"  >
 		<property name="testService" ref="testService"/>
 	</bean>
+	<context:component-scan base-package="org.springframework.simple">
+
+	</context:component-scan>
 
 
 </beans>

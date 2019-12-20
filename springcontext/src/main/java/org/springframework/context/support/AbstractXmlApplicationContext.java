@@ -26,9 +26,15 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.io.Resource;
 
 /**
+ * 方便的{@link ApplicationContext}基类实现，从xml文档中提取配置，通过一个
+ * {@link XmlBeanDefinitionReader}
  * Convenient base class for {@link org.springframework.context.ApplicationContext}
  * implementations, drawing configuration from XML documents containing bean definitions
  * understood by an {@link XmlBeanDefinitionReader}.
+ *
+ * 子类只需要实现 {@link #getConfigResources()} 和/或者 {@link #getConfigLocations()}.
+ * 另外，他们可能覆盖 {@link #getResourceByPath(String)}去解析一个相对路径，用一种和环境相关的方式。
+ * 也可以覆盖 {@link #getResourcePatternResolver()} 来扩展路径解析。
  *
  * <p>Subclasses just have to implement the {@link #getConfigResources} and/or
  * the {@link #getConfigLocations} method. Furthermore, they might override

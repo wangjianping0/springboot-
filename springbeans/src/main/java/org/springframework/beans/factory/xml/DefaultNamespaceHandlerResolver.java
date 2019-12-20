@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
@@ -30,6 +31,8 @@ import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.CollectionUtils;
+
+import static java.lang.Thread.currentThread;
 
 /**
  * Default implementation of the {@link NamespaceHandlerResolver} interface.
@@ -46,6 +49,7 @@ import org.springframework.util.CollectionUtils;
  * @see NamespaceHandler
  * @see DefaultBeanDefinitionDocumentReader
  */
+@Slf4j
 public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver {
 
 	/**
@@ -64,7 +68,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 	private final String handlerMappingsLocation;
 
 	/** Stores the mappings from namespace URI to NamespaceHandler class name / instance */
-	private volatile Map<String, Object> handlerMappings;
+	private  Map<String, Object> handlerMappings;
 
 
 	/**
@@ -150,6 +154,7 @@ public class DefaultNamespaceHandlerResolver implements NamespaceHandlerResolver
 			synchronized (this) {
 				if (this.handlerMappings == null) {
 					try {
+						log.info("current thread:{}", currentThread().getName());
 						Properties mappings =
 								PropertiesLoaderUtils.loadAllProperties(this.handlerMappingsLocation, this.classLoader);
 						if (logger.isDebugEnabled()) {

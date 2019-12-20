@@ -21,6 +21,8 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Properties;
 
@@ -176,8 +178,9 @@ public abstract class PropertiesLoaderUtils {
 		}
 		Properties props = new Properties();
 		Enumeration urls = clToUse.getResources(resourceName);
-		while (urls.hasMoreElements()) {
-			URL url = (URL) urls.nextElement();
+		ArrayList list = Collections.list(urls);
+		for (Object item : list) {
+			URL url = (URL) item;
 			URLConnection con = url.openConnection();
 			ResourceUtils.useCachesIfNecessary(con);
 			InputStream is = con.getInputStream();
