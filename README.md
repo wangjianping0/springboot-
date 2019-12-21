@@ -10,6 +10,27 @@ spring boot项目中克隆后，回退到了第一个版本，本工程即为那
 #### 使用说明
 如果遇到maven依赖下载不下来，请查看是否是snapshot类型的依赖，如果是的话，可以考虑在maven的
 settings.xml中添加以下部分：
+同时，需要注意，各级settings.xml中的mirror配置，比如阿里云maven仓库一般如下配置：
+```xml
+<mirror> 
+    <id>aliyun-maven</id> 
+    <mirrorOf>*</mirrorOf> 
+    <name>aliyun maven</name> 
+    <url>http://maven.aliyun.com/nexus/content/groups/public</url> 
+</mirror>
+
+```
+*上面的mirrorOf是对全部仓库进行镜像，但是我们下载snapshot类型的artifact是要到下面的spring自身的仓库下载的，
+所以这里可以修改为如下配置，排除掉了spring-snapshots仓库*：
+```xml
+<mirror> 
+    <id>aliyun-maven</id> 
+    <mirrorOf>*,!spring-snapshots</miiroOf>  
+    <name>aliyun maven</name> 
+    <url>http://maven.aliyun.com/nexus/content/groups/public</url> 
+</mirror>
+```
+
 ```xml
  <profiles>
     <profile>

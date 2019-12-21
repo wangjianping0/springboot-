@@ -12,6 +12,18 @@
 	<properties>
 		<main.basedir>${project.basedir}/..</main.basedir>
 	</properties>
+	<repositories>
+		<repository>
+			<id>spring-snapshots</id>
+			<name>Spring Snapshots</name>
+			<url>http://maven.springframework.org/snapshot</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!--<dependency>-->
 			<!--<groupId>org.springframework</groupId>-->
