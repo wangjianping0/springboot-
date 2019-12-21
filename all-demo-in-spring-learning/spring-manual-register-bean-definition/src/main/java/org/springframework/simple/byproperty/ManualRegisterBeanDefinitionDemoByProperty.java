@@ -67,6 +67,7 @@ public class ManualRegisterBeanDefinitionDemoByProperty {
         Assert.isTrue(bean.getT() == testService);
 
         List<BeanDefinition> beanDefinitionList = factory.getBeanDefinitionList();
+
     }
 
 

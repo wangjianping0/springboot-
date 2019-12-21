@@ -51,7 +51,8 @@ settings.xml中添加以下部分：
     </profile>
 </profiles>
 ```
- 
+ 关于maven的mirror和repository配置，可以查阅:
+ https://www.cnblogs.com/a-du/p/9645971.html
 
 #### 参与贡献
 

@@ -4,7 +4,7 @@ import lombok.ToString;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.simple.TestService;
 
-@ToString
+//@ToString
 public class TestControllerByConstructor {
 
     TestService testService;

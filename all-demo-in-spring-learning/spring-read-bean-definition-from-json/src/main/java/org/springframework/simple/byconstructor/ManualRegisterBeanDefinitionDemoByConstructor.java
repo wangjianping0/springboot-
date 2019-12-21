@@ -1,6 +1,7 @@
 package org.springframework.simple.byconstructor;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
@@ -26,7 +27,6 @@ public class ManualRegisterBeanDefinitionDemoByConstructor {
     public static void main(String[] args) {
         wireDependencyByConstructor();
     }
-
 
     /**
      * 通过构造器的方式来注入依赖
