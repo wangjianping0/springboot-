@@ -248,10 +248,11 @@ public class PropertiesBeanDefinitionReader extends AbstractBeanDefinitionReader
 			InputStream is = encodedResource.getResource().getInputStream();
 			try {
 				if (encodedResource.getEncoding() != null) {
-					getPropertiesPersister().load(props, new InputStreamReader(is, encodedResource.getEncoding()));
+					InputStreamReader reader = new InputStreamReader(is, encodedResource.getEncoding());
+					props.load(reader);
 				}
 				else {
-					getPropertiesPersister().load(props, is);
+					props.load(is);
 				}
 			}
 			finally {
