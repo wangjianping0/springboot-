@@ -13,4 +13,6 @@
 
     <util:properties id="confTest"
                      location="classpath:test.properties"/>
+
+	<bean id="rob" class="..TestBean" p:name="Rob Harrop" p:spouse-ref="sally"/>
 </beans>
