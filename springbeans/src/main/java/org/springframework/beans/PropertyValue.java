@@ -133,7 +133,7 @@ public class PropertyValue extends BeanMetadataAttributeAccessor implements Seri
 	 * @return the original PropertyValue (either a source of this
 	 * value holder or this value holder itself).
 	 */
-	public PropertyValue getOriginalPropertyValue() {
+	public PropertyValue fetchOriginalPropertyValue() {
 		PropertyValue original = this;
 		while (original.source instanceof PropertyValue && original.source != original) {
 			original = (PropertyValue) original.source;

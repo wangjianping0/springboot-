@@ -897,7 +897,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 			}
 			tokens = getPropertyNameTokens(getFinalPath(nestedBw, propertyName));
 			if (nestedBw == this) {
-				pv.getOriginalPropertyValue().resolvedTokens = tokens;
+				pv.fetchOriginalPropertyValue().resolvedTokens = tokens;
 			}
 			nestedBw.setPropertyValue(tokens, pv);
 		}
@@ -1044,7 +1044,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 								matches.buildErrorMessage(), matches.getPossibleMatches());
 					}
 				}
-				pv.getOriginalPropertyValue().resolvedDescriptor = pd;
+				pv.fetchOriginalPropertyValue().resolvedDescriptor = pd;
 			}
 
 			Object oldValue = null;
@@ -1096,7 +1096,7 @@ public class BeanWrapperImpl extends AbstractPropertyAccessor implements BeanWra
 						}
 						valueToApply = convertForProperty(propertyName, oldValue, originalValue, pd);
 					}
-					pv.getOriginalPropertyValue().conversionNecessary = (valueToApply != originalValue);
+					pv.fetchOriginalPropertyValue().conversionNecessary = (valueToApply != originalValue);
 				}
 				final Method writeMethod = (pd instanceof GenericTypeAwarePropertyDescriptor ?
 						((GenericTypeAwarePropertyDescriptor) pd).getWriteMethodForActualAccess() :

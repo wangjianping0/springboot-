@@ -400,11 +400,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 	public Object applyBeanPostProcessorsBeforeInitialization(Object existingBean, String beanName)
 			throws BeansException {
-
+		//调用beanPostProcessor的 初始化前回调勾子方法。
 		Object result = existingBean;
 		for (BeanPostProcessor beanProcessor : getBeanPostProcessors()) {
 			result = beanProcessor.postProcessBeforeInitialization(result, beanName);
 			if (result == null) {
+				//如果返回后处理器返回null，这里也直接返回null了
 				return result;
 			}
 		}
@@ -538,6 +539,9 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		Object exposedObject = bean;
 		try {
 			log.info("populate bean {}",beanName);
+			/**
+			 * 对当前bean，调用其getPropertyValues，获取属性，进行属性注入。
+			 */
 			populateBean(beanName, mbd, instanceWrapper);
 			if (exposedObject != null) {
 				exposedObject = initializeBean(beanName, exposedObject, mbd);
@@ -1546,11 +1550,22 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		return wrappedBean;
 	}
 
+	/**
+	 * 集中了各大aware方法啊
+	 * @param beanName
+	 * @param bean
+	 */
 	private void invokeAwareMethods(final String beanName, final Object bean) {
 		if (bean instanceof Aware) {
+			/**
+			 * 如果当前bean要感知beanName，则调用其setBeanName方法
+			 */
 			if (bean instanceof BeanNameAware) {
 				((BeanNameAware) bean).setBeanName(beanName);
 			}
+			/**
+			 * 如果当前bean要感知classloader，则注入classloader
+			 */
 			if (bean instanceof BeanClassLoaderAware) {
 				((BeanClassLoaderAware) bean).setBeanClassLoader(getBeanClassLoader());
 			}

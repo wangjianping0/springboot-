@@ -350,6 +350,8 @@ public class BeanDefinitionParserDelegate {
 	}
 
 	/**
+	 * 填充一些默认的属性，比如lazy-init为false，autowire、dependency-check，init-method，
+	 * destroy-method，merge settings。
 	 * Populate the given DocumentDefaultsDefinition instance with the default lazy-init,
 	 * autowire, dependency check settings, init-method, destroy-method and merge settings.
 	 * Support nested 'beans' element use cases by falling back to

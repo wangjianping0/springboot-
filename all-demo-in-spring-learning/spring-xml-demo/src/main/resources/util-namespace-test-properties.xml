@@ -8,11 +8,8 @@
                 http://www.springframework.org/schema/util  http://www.springframework.org/schema/util/spring-util-4.0.xsd">
 
 
-    <util:constant id="chin.age" static-field=
-            "java.sql.Connection.TRANSACTION_SERIALIZABLE"/>
 
     <util:properties id="confTest"
                      location="classpath:test.properties"/>
 
-	<bean id="rob" class="..TestBean" p:name="Rob Harrop" p:spouse-ref="sally"/>
 </beans>

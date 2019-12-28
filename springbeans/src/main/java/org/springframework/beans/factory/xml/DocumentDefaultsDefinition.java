@@ -19,6 +19,7 @@ package org.springframework.beans.factory.xml;
 import org.springframework.beans.factory.parsing.DefaultsDefinition;
 
 /**
+ * 一个简单的javaBean，里面主要包含<beans></>下面的xml bean definition的一些默认属性
  * Simple JavaBean that holds the defaults specified at the {@code &lt;beans&gt;}
  * level in a standard Spring XML bean definition document:
  * {@code default-lazy-init}, {@code default-autowire}, etc.
