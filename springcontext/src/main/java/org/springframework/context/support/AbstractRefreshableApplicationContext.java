@@ -230,4 +230,13 @@ public abstract class AbstractRefreshableApplicationContext extends AbstractAppl
 	protected abstract void loadBeanDefinitions(DefaultListableBeanFactory beanFactory)
 			throws BeansException, IOException;
 
+	/**
+	 * add by ckl
+	 * 方便查看
+	 * @return
+	 */
+	public DefaultListableBeanFactory getDefaultListableBeanFactory() {
+		return beanFactory;
+	}
+
 }

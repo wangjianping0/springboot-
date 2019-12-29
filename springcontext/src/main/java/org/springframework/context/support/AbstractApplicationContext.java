@@ -498,6 +498,9 @@ public abstract class AbstractApplicationContext extends DefaultResourceLoader
                 }
 
 				log.info("list with depends on:{}",arrayList);
+				/**
+				 * 这里对单例bean、且lazy-init=false进行实例化
+				 */
 				finishBeanFactoryInitialization(beanFactory);
 
 				// Last step: publish corresponding event.

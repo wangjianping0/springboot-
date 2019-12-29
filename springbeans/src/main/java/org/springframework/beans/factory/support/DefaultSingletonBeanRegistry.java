@@ -555,4 +555,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		return this.singletonObjects;
 	}
 
+	/**
+	 * add by ckl
+	 * 方便查询
+	 * @return
+	 */
+	public Map<String, Object> getAllSingletonObjectMap() {
+		return this.singletonObjects;
+	}
 }
