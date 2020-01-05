@@ -21,12 +21,15 @@ import org.w3c.dom.Element;
 import org.springframework.beans.factory.config.BeanDefinition;
 
 /**
+ * 该接口主要被DefaultBeanDefinitionDocumentReader使用，来处理顶级的，非默认命名空间下的的顶级元素(直接在<beans></beans>下)
  * Interface used by the {@link DefaultBeanDefinitionDocumentReader} to handle custom,
  * top-level (directly under {@code <beans/>}) tags.
  *
+ * 实现类可以自由地通过该元素中的元数据，来转换为任意多个BeanDefinition。（比如<context:component-scan></>）
  * <p>Implementations are free to turn the metadata in the custom tag into as many
  * {@link BeanDefinition BeanDefinitions} as required.
  *
+ * Dom解析器，通过元素所在的命名空间，找到对应的NamespaceHandler，再从NamespaceHandler中找到对应的BeanDefinitionParser
  * <p>The parser locates a {@link BeanDefinitionParser} from the associated
  * {@link NamespaceHandler} for the namespace in which the custom tag resides.
  *
@@ -38,6 +41,8 @@ import org.springframework.beans.factory.config.BeanDefinition;
 public interface BeanDefinitionParser {
 
 	/**
+	 * 解析指定额element，注册其返回的BeanDefinition到BeanDefinitionRegistry
+	 * （使用参数ParserContext#getRegistry()得到BeanDefinitionRegistry）
 	 * Parse the specified {@link Element} and register the resulting
 	 * {@link BeanDefinition BeanDefinition(s)} with the
 	 * {@link org.springframework.beans.factory.xml.ParserContext#getRegistry() BeanDefinitionRegistry}

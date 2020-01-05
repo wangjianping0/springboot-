@@ -29,8 +29,8 @@ public class TestConstant {
                 context.getBeanFactory().getBeanDefinitionList();
         MyFastJson.printJsonStringForBeanDefinitionList(list);
 
-//        Object testService = context.getBean("&chin.age");
-//        System.out.println("factory:" + testService);
+//        Object bean = context.getBean("chin.age");
+//        System.out.println("bean:" + bean);
 
     }
 }

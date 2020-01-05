@@ -32,6 +32,9 @@ import org.springframework.cglib.proxy.MethodProxy;
 import org.springframework.cglib.proxy.NoOp;
 
 /**
+ * 默认的对象实例化策略，目前BeanFactory在用。
+ * 使用cglib去动态地生成子类，如果方法需要被重写，以支持方法注入
+ *
  * Default object instantiation strategy for use in BeanFactories.
  * Uses CGLIB to generate subclasses dynamically if methods need to be
  * overridden by the container, to implement Method Injection.

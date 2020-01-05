@@ -23,7 +23,9 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 
 /**
+ * 负责创建一个root bean definition对应的bean的实例
  * Interface responsible for creating instances corresponding to a root bean definition.
+ * 这个被弄成一个策略，是因为多种方式都是可能的，包括使用cglib去创建子类，以支持方法注入
  *
  * <p>This is pulled out into a strategy as various approaches are possible,
  * including using CGLIB to create subclasses on the fly to support Method Injection.
