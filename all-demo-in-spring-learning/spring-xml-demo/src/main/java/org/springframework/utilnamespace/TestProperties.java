@@ -5,6 +5,7 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.util.MyFastJson;
 
 import java.util.List;
 
@@ -23,11 +24,9 @@ public class TestProperties {
 
         List<BeanDefinition> list =
                 context.getBeanFactory().getBeanDefinitionList();
-        log.info("bean definition list:{}", JSON.toJSONString(list,
-                SerializerFeature.DisableCircularReferenceDetect,
-                SerializerFeature.PrettyFormat));
+        MyFastJson.printJsonStringForBeanDefinitionList(list);
 
-        Object o = context.getBean("confTest");
+        Object o = context.getBean(TestPropertiesBean.class);
         System.out.println(o);
     }
 }

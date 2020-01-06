@@ -380,6 +380,15 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 			throw new IllegalStateException("No bean class specified on bean definition");
 		}
 		if (!(beanClassObject instanceof Class)) {
+			if (beanClassObject instanceof String) {
+				Class<?> clazz = null;
+				try {
+					clazz = Thread.currentThread().getContextClassLoader().loadClass((String) beanClassObject);
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+				}
+				return clazz;
+			}
 			throw new IllegalStateException(
 					"Bean class name [" + beanClassObject + "] has not been resolved into an actual Class");
 		}
