@@ -21,5 +21,6 @@
 	<modules>
 		<module>../../springcore</module>
 		<module>../../springbeans</module>
+		<module>../../springcontext</module>
 	</modules>
 </project>
