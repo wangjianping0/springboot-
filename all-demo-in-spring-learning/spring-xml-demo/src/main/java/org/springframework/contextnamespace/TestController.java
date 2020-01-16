@@ -19,7 +19,6 @@ import java.util.Map;
  * creat_date: 2019/12/25 0025
  * creat_time: 15:50
  **/
-@Controller
 @Data
 public class TestController {
     @Autowired

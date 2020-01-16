@@ -11,6 +11,6 @@ import org.springframework.stereotype.Service;
  * creat_date: 2019/12/25 0025
  * creat_time: 15:50
  **/
-@Service
+
 class TestService {
 }

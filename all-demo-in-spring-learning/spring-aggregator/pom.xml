@@ -22,5 +22,7 @@
 		<module>../../springcore</module>
 		<module>../../springbeans</module>
 		<module>../../springcontext</module>
+		<module>../spring-demo-common</module>
+		<module>../spring-xml-demo</module>
 	</modules>
 </project>

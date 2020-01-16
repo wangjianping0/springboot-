@@ -16,16 +16,29 @@
 
 package org.springframework.beans.factory.parsing;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.xml.DocumentDefaultsDefinition;
+
 /**
+ * {@link ReaderEventListener}的简单实现，提供空白操作
+ * 可参考网络一篇实现：
+ * https://blog.csdn.net/RobertoHuang/article/details/78881118
+ *
  * Empty implementation of the {@link ReaderEventListener} interface,
  * providing no-op implementations of all callback methods.
  *
  * @author Juergen Hoeller
  * @since 2.0
  */
+@Slf4j
 public class EmptyReaderEventListener implements ReaderEventListener {
 
 	public void defaultsRegistered(DefaultsDefinition defaultsDefinition) {
+		if (defaultsDefinition instanceof DocumentDefaultsDefinition) {
+			DocumentDefaultsDefinition documentDefaultsDefinition = (DocumentDefaultsDefinition) defaultsDefinition;
+//			documentDefaultsDefinition.setLazyInit("true");
+		}
+		log.warn("I am in the defaultsRegistered");
 		// no-op
 	}
 
