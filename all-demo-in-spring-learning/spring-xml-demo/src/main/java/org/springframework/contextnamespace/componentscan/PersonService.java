@@ -1,4 +1,4 @@
-package org.springframework.contextnamespace.componentscantest;
+package org.springframework.contextnamespace.componentscan;
 
 import org.springframework.stereotype.Service;
 

@@ -1,13 +1,11 @@
-package org.springframework.contextnamespace.componentscantest;
+package org.springframework.contextnamespace.componentscan;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.MyFastJson;
 
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 public class MainClassForTestComponentScan {
