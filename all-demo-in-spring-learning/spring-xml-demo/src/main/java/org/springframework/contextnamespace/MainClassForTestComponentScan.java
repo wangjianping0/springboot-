@@ -1,13 +1,12 @@
-package org.springframework.contextnamespace.componentscan;
+package org.springframework.contextnamespace;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.MyFastJson;
 
 import java.util.List;
 
-@Slf4j
+
 public class MainClassForTestComponentScan {
 
     public static void main(String[] args) {
@@ -20,7 +19,7 @@ public class MainClassForTestComponentScan {
                 context.getBeanFactory().getBeanDefinitionList();
         MyFastJson.printJsonStringForBeanDefinitionList(list);
 
-        Object bean = context.getBean(PersonTestController.class);
+        Object bean = context.getBean(TeacherController.class);
         System.out.println("PersonController bean:" + bean);
 
     }

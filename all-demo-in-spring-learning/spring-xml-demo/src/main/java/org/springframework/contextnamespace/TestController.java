@@ -20,6 +20,7 @@ import java.util.Map;
  * creat_time: 15:50
  **/
 @Data
+@Controller
 public class TestController {
     @Autowired
     private TestService testService;

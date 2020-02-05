@@ -54,14 +54,22 @@
             <scope>compile</scope>
             <optional>true</optional>
         </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.spring-boot.learn</groupId>-->
+            <!--<artifactId>spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib</artifactId>-->
+            <!--<version>1.0</version>-->
+            <!--<scope>system</scope>-->
+            <!--<systemPath>-->
+                <!--${project.basedir}/src/main/resources/lib/spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib.jar-->
+            <!--</systemPath>-->
+        <!--</dependency>-->
+        <!--如果这里报错，先到spring core模块下的resources的lib下，cmd里执行以下命令
+        mvn install:install-file -Dfile=spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib.jar -DgroupId=com.spring -DartifactId=spring-core-only-asm-cglib -Dversion=4.0.0 -Dpackaging=jar
+        -->
         <dependency>
-            <groupId>com.spring-boot.learn</groupId>
-            <artifactId>spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib</artifactId>
-            <version>1.0</version>
-            <scope>system</scope>
-            <systemPath>
-                ${project.basedir}/src/main/resources/lib/spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib.jar
-            </systemPath>
+            <groupId>com.spring</groupId>
+            <artifactId>spring-core-only-asm-cglib</artifactId>
+            <version>4.0.0</version>
         </dependency>
 
     </dependencies>
@@ -83,10 +91,10 @@
                     <artifactId>maven-compiler-plugin</artifactId>
                     <version>3.8.0</version>
                 </plugin>
-                <plugin>
-                    <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.22.1</version>
-                </plugin>
+                <!--<plugin>-->
+                    <!--<artifactId>maven-surefire-plugin</artifactId>-->
+                    <!--<version>2.22.1</version>-->
+                <!--</plugin>-->
                 <plugin>
                     <artifactId>maven-jar-plugin</artifactId>
                     <version>3.0.2</version>
