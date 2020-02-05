@@ -9,18 +9,8 @@
 
     <context:component-scan
             use-default-filters="false"
-            base-package="org.springframework.contextnamespace">
-        <context:include-filter
-                type="annotation"
-                expression="org.springframework.stereotype.Component"/>
-        <context:exclude-filter type="regex" expression="org.springframework.contextnamespace.TestController"/>
+            base-package="org.springframework.contextnamespace.componentscan">
+        <context:include-filter type="annotation" expression="org.springframework.contextnamespace.DerivedComponent"/>
     </context:component-scan>
-
-    <!--<context:component-scan-->
-            <!--use-default-filters="true"-->
-            <!--base-package="org.springframework.contextnamespace">-->
-        <!--<context:exclude-filter type="annotation" expression="org.springframework.contextnamespace.ShouldExclude"></context:exclude-filter>-->
-        <!--<context:exclude-filter type="regex" expression="org.springframework.contextnamespace.TestController"></context:exclude-filter>-->
-    <!--</context:component-scan>-->
 
 </beans>
