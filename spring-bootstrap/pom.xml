@@ -140,6 +140,10 @@
 					<artifactId>spring-core</artifactId>
 					<groupId>org.springframework</groupId>
 				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
 			</exclusions>
 			<optional>true</optional>
 		</dependency>
@@ -176,6 +180,10 @@
 				</exclusion>
 				<exclusion>
 					<artifactId>spring-core</artifactId>
+					<groupId>org.springframework</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>spring-aop</artifactId>
 					<groupId>org.springframework</groupId>
 				</exclusion>
 			</exclusions>

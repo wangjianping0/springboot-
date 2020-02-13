@@ -20,6 +20,7 @@
 
 	<modules>
 		<module>../../springcore</module>
+		<module>../../springaop</module>
 		<module>../../springbeans</module>
 		<module>../../springcontext</module>
 		<module>../spring-demo-common</module>
