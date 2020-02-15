@@ -16,6 +16,7 @@
 
 package org.springframework.beans.factory.config;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.BeansException;
@@ -326,4 +327,5 @@ public interface AutowireCapableBeanFactory extends BeanFactory {
 	Object resolveDependency(DependencyDescriptor descriptor, String beanName,
 			Set<String> autowiredBeanNames, TypeConverter typeConverter) throws BeansException;
 
+    List<InstantiationAwareBeanPostProcessor> getInstantiationAwareBeanPostProcessors();
 }

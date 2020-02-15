@@ -323,6 +323,12 @@ class BeanDefinitionValueResolver {
 				/**
 				 * 通过xml <bean> <constructor-arg></></>时，如果<constructor-arg>引用了一个bean，就会到这来
 				 * 这里会去beanFactory查找对应的bean
+				 * 使用：<aop:after method="afterPerform" pointcut-ref="mypointcut"/> 时，切面的类型比如为：
+				 * org.springframework.aop.aspectj.AspectJAfterAdvice#AspectJAfterAdvice(java.lang.reflect.Method, org.springframework.aop.aspectj.AspectJExpressionPointcut, org.springframework.aop.aspectj.AspectInstanceFactory)
+				 * 其中的第二个构造函数参数为 AspectJExpressionPointcut，就是用的RuntimeBeanReference来表达这个依赖。
+				 * 所以，要创建 AspectJAfterAdvice bean的时候，会先创建其三个构造函数的参数，第二个AspectJExpressionPointcut参数在构造时，就
+				 * 走这个地方。
+				 *
 				 */
 				Object bean = this.beanFactory.getBean(refName);
 				this.beanFactory.registerDependentBean(refName, this.beanName);

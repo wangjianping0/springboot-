@@ -25,6 +25,7 @@ public class MyFastJson {
         log.info("bean definition list:{}", JSON.toJSONString(list,
                 new SerializeFilter[]{filter,genericBeanDefinitionFilter,typedStringValueFilter},
                 SerializerFeature.DisableCircularReferenceDetect,
+                SerializerFeature.WriteNonStringKeyAsString,
                 SerializerFeature.PrettyFormat));
 
     }

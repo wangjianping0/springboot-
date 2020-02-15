@@ -476,7 +476,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		Object beanInstance = doCreateBean(beanName, mbd, args);
 		if (logger.isDebugEnabled()) {
-			logger.debug("Finished creating instance of bean '" + beanName + "'");
+			logger.debug("Finished creating instance of bean '" + beanName + "',actual bean class is " + beanInstance.getClass().getName());
 		}
 		return beanInstance;
 	}
@@ -1093,6 +1093,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 	}
 
 	/**
+	 * 这里的逻辑又清晰一些了。
+	 * 1、参数中进来的bw已经是完成了实例化了，在实例化之前，还进行了
+	 * {@link InstantiationAwareBeanPostProcessor}的postProcessBeforeInstantiation操作
+	 * 2、这里呢，在对属性进行注入前，进行
+	 * 	{@link InstantiationAwareBeanPostProcessor}的postProcessAfterInstantiation
+	 * 	表示实例化后的后置处理
+	 *
+	 * 3、进行属性注入
 	 * Populate the bean instance in the given BeanWrapper with the property values
 	 * from the bean definition.
 	 * @param beanName the name of the bean
@@ -1115,23 +1123,24 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			}
 		}
 
+		List<InstantiationAwareBeanPostProcessor> instantiationAwareBeanPostProcessorList = getInstantiationAwareBeanPostProcessors();
+
 		// Give any InstantiationAwareBeanPostProcessors the opportunity to modify the
 		// state of the bean before properties are set. This can be used, for example,
 		// to support styles of field injection.
 		boolean continueWithPropertyPopulation = true;
 
 		if (!mbd.isSynthetic() && hasInstantiationAwareBeanPostProcessors()) {
-			for (BeanPostProcessor bp : getBeanPostProcessors()) {
-				if (bp instanceof InstantiationAwareBeanPostProcessor) {
-					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) bp;
-					if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
-						continueWithPropertyPopulation = false;
-						break;
-					}
+			for (InstantiationAwareBeanPostProcessor ibp : instantiationAwareBeanPostProcessorList) {
+				// 本后置处理器，如果返回false，则不进行 属性注入的操作
+				if (!ibp.postProcessAfterInstantiation(bw.getWrappedInstance(), beanName)) {
+					continueWithPropertyPopulation = false;
+					break;
 				}
 			}
 		}
 
+		// 如果不需要属性注入，则直接返回
 		if (!continueWithPropertyPopulation) {
 			return;
 		}
@@ -1170,7 +1179,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				log.info("filtered InstantiationAwareBeanPostProcessor list:{}",filteredList);
 				for (BeanPostProcessor beanPostProcessor : filteredList) {
 					InstantiationAwareBeanPostProcessor ibp = (InstantiationAwareBeanPostProcessor) beanPostProcessor;
-					log.info("{} start to process {}",beanPostProcessor,beanName);
+					log.info("{} start to process {}",ibp.getClass().getSimpleName(),beanName);
 					pvs = ibp.postProcessPropertyValues(pvs, filteredPds, bw.getWrappedInstance(), beanName);
 					if (beanName.equalsIgnoreCase("SampleController")) {
 						log.info("after process, bean :{}",bw.getWrappedInstance());
@@ -1186,6 +1195,17 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		}
 
 		applyPropertyValues(beanName, mbd, bw, pvs);
+	}
+
+	@Override
+	public List<InstantiationAwareBeanPostProcessor> getInstantiationAwareBeanPostProcessors() {
+		List<InstantiationAwareBeanPostProcessor> instantiationAwareBeanPostProcessorList = new ArrayList<>();
+		for (BeanPostProcessor bp : getBeanPostProcessors()) {
+			if (bp instanceof InstantiationAwareBeanPostProcessor) {
+				instantiationAwareBeanPostProcessorList.add((InstantiationAwareBeanPostProcessor) bp);
+			}
+		}
+		return instantiationAwareBeanPostProcessorList;
 	}
 
 	/**

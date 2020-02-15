@@ -583,6 +583,9 @@ class ConstructorResolver {
 	}
 
 	/**
+	 * 解析bean definition里的构造器参数配置,看看需要什么类型的参数，然后去bean factory中查找相应的bean
+	 *  definition，然后将其解析为真正的bean，来作为参数
+	 * 这可能会涉及到去查找别的bean
 	 * Resolve the constructor arguments for this bean into the resolvedValues object.
 	 * This may involve looking up other beans.
 	 * This method is also used for handling invocations of static factory methods.
@@ -598,6 +601,9 @@ class ConstructorResolver {
 
 		int minNrOfArgs = cargs.getArgumentCount();
 
+		/**
+		 * 带下标的参数
+		 */
 		for (Map.Entry<Integer, ConstructorArgumentValues.ValueHolder> entry : cargs.getIndexedArgumentValues().entrySet()) {
 			int index = entry.getKey();
 			if (index < 0) {
