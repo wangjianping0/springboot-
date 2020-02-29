@@ -361,7 +361,8 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 		Object[] specificInterceptors = getAdvicesAndAdvisorsForBean(bean.getClass(), beanName, null);
 		if (specificInterceptors != DO_NOT_PROXY) {
 			this.advisedBeans.put(cacheKey, Boolean.TRUE);
-			Object proxy = createProxy(bean.getClass(), beanName, specificInterceptors, new SingletonTargetSource(bean));
+			Object proxy = createProxy(bean.getClass(), beanName, specificInterceptors,
+					new SingletonTargetSource(bean));
 			this.proxyTypes.put(cacheKey, proxy.getClass());
 			return proxy;
 		}
@@ -457,12 +458,14 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 		if (!shouldProxyTargetClass(beanClass, beanName)) {
 			// Must allow for introductions; can't just set interfaces to
 			// the target's interfaces only.
+			// 获取该bean class实现了的全部接口，递归获取。
 			Class<?>[] targetInterfaces = ClassUtils.getAllInterfacesForClass(beanClass, this.proxyClassLoader);
 			for (Class<?> targetInterface : targetInterfaces) {
 				proxyFactory.addInterface(targetInterface);
 			}
 		}
 
+		// 获取advisor
 		Advisor[] advisors = buildAdvisors(beanName, specificInterceptors);
 		for (Advisor advisor : advisors) {
 			proxyFactory.addAdvisor(advisor);
@@ -480,6 +483,7 @@ public abstract class AbstractAutoProxyCreator extends ProxyConfig
 	}
 
 	/**
+	 * 是否对类进行代理，也就是说，如果返回true，则使用cglib；否则使用jdk 动态代理
 	 * Determine whether the given bean should be proxied with its target
 	 * class rather than its interfaces. Checks the
 	 * {@link #setProxyTargetClass "proxyTargetClass" setting} as well as the

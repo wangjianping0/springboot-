@@ -1,5 +1,5 @@
 package foo;
 
 public interface Perform {
-    void sing();
+    public void sing();
 }

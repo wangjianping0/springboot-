@@ -172,6 +172,8 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 
 
 	/**
+	 * 检查切点是否准备好去匹配了
+	 * 懒加载其依赖的AspectJ的切点表达式。
 	 * Check whether this pointcut is ready to match,
 	 * lazily building the underlying AspectJ pointcut expression.
 	 */

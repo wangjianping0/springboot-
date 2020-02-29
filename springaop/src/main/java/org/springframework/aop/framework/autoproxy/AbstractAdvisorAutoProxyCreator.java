@@ -18,6 +18,7 @@ package org.springframework.aop.framework.autoproxy;
 
 import java.util.List;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.support.AopUtils;
@@ -45,6 +46,7 @@ import org.springframework.core.OrderComparator;
  * @see #findCandidateAdvisors
  */
 @SuppressWarnings("serial")
+@Slf4j
 public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyCreator {
 
 	private BeanFactoryAdvisorRetrievalHelper advisorRetrievalHelper;
@@ -85,7 +87,19 @@ public abstract class AbstractAdvisorAutoProxyCreator extends AbstractAutoProxyC
 	 */
 	protected List<Advisor> findEligibleAdvisors(Class beanClass, String beanName) {
 		List<Advisor> candidateAdvisors = findCandidateAdvisors();
+		StringBuilder advisorClassName = new StringBuilder("");
+		for (Advisor candidateAdvisor : candidateAdvisors) {
+			advisorClassName.append(candidateAdvisor.getClass().getName()).append(", ");
+		}
+		log.info("find candidateAdvisors {} for target class:{}",advisorClassName,beanClass.getName());
+
 		List<Advisor> eligibleAdvisors = findAdvisorsThatCanApply(candidateAdvisors, beanClass, beanName);
+
+		StringBuilder eligibleAdvisorClassName = new StringBuilder("");
+		for (Advisor candidateAdvisor : eligibleAdvisors) {
+			eligibleAdvisorClassName.append(candidateAdvisor.getClass().getName()).append(", ");
+		}
+		log.info("find eligible Advisors {} for target class:{}",eligibleAdvisorClassName,candidateAdvisors);
 		extendAdvisors(eligibleAdvisors);
 		if (!eligibleAdvisors.isEmpty()) {
 			eligibleAdvisors = sortAdvisors(eligibleAdvisors);

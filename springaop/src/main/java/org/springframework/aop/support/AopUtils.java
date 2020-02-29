@@ -220,9 +220,9 @@ public abstract class AopUtils {
 		for (Class<?> clazz : classes) {
 			Method[] methods = clazz.getMethods();
 			for (Method method : methods) {
-				if ((introductionAwareMethodMatcher != null &&
-						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions)) ||
-						methodMatcher.matches(method, targetClass)) {
+				boolean b = introductionAwareMethodMatcher != null &&
+						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions);
+				if (b ||  methodMatcher.matches(method, targetClass)) {
 					return true;
 				}
 			}
@@ -244,13 +244,14 @@ public abstract class AopUtils {
 	}
 
 	/**
+	 * 这个方法被复用了，进来的advisor如果是那种introducation的，hasIntroductions就会传入为true
 	 * Can the given advisor apply at all on the given class?
 	 * <p>This is an important test as it can be used to optimize out a advisor for a class.
 	 * This version also takes into account introductions (for IntroductionAwareMethodMatchers).
 	 * @param advisor the advisor to check
 	 * @param targetClass class we're testing
 	 * @param hasIntroductions whether or not the advisor chain for this bean includes
-	 * any introductions
+	 * any introductions   意思是，这个advisor集合里，是否有包含introductions
 	 * @return whether the pointcut can apply on any method
 	 */
 	public static boolean canApply(Advisor advisor, Class<?> targetClass, boolean hasIntroductions) {
@@ -268,6 +269,10 @@ public abstract class AopUtils {
 	}
 
 	/**
+	 * 这个接口的含义，我发现真的很清晰，很像平时业务代码会遇到的场景。
+	 * 给定两个参数，一个是要被筛选的集合，一个（clazz）是筛选条件；
+	 * 返回呢，就是返回一个满足条件的子集
+	 * 所以，这里这个被定义为了静态方法
 	 * Determine the sublist of the {@code candidateAdvisors} list
 	 * that is applicable to the given class.
 	 * @param candidateAdvisors the Advisors to evaluate
@@ -285,6 +290,9 @@ public abstract class AopUtils {
 				eligibleAdvisors.add(candidate);
 			}
 		}
+		/**
+		 * 如果不为空，则表示有 IntroductionAdvisor类型的切面
+		 */
 		boolean hasIntroductions = !eligibleAdvisors.isEmpty();
 		for (Advisor candidate : candidateAdvisors) {
 			if (candidate instanceof IntroductionAdvisor) {

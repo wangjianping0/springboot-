@@ -860,6 +860,10 @@ public abstract class AbstractBeanDefinition extends BeanMetadataAttributeAccess
 	 * Set whether this bean definition is 'synthetic', that is, not defined
 	 * by the application itself (for example, an infrastructure bean such
 	 * as a helper for auto-proxying, created through {@code &ltaop:config&gt;}).
+	 * 终于知道这个单词啥意思了，原意是合成的，这里的意思是：
+	 * 这个bean是否是合成的，也就是说，不是程序自己定义的。比如，解析aop：config时，为了自动代理
+	 * 而创建的辅助bean
+	 *
 	 */
 	public void setSynthetic(boolean synthetic) {
 		this.synthetic = synthetic;

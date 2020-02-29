@@ -99,18 +99,22 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 		CompositeComponentDefinition compositeDef =
 				new CompositeComponentDefinition(element.getTagName(), parserContext.extractSource(element));
 		parserContext.pushContainingComponent(compositeDef);
-
+		// 配置代理创建bean definition，是一个beanPostProcessor类型的bean definition
 		configureAutoProxyCreator(parserContext, element);
 
+		// 获取aop元素下的子元素
 		List<Element> childElts = DomUtils.getChildElements(element);
 		for (Element elt: childElts) {
 			String localName = parserContext.getDelegate().getLocalName(elt);
+			// 如果元素名等于pointcut,则走下面
 			if (POINTCUT.equals(localName)) {
 				parsePointcut(elt, parserContext);
 			}
+			// 如果元素名等于 advisor,则走下面
 			else if (ADVISOR.equals(localName)) {
 				parseAdvisor(elt, parserContext);
 			}
+			// 如果元素名等于 aspect,则走下面
 			else if (ASPECT.equals(localName)) {
 				parseAspect(elt, parserContext);
 			}
@@ -357,6 +361,8 @@ class ConfigBeanDefinitionParser implements BeanDefinitionParser {
 	 * parsing to occur so that the pointcut may be associate with the advice bean.
 	 * This same pointcut is also configured as the pointcut for the enclosing
 	 * Advisor definition using the supplied MutablePropertyValues.
+     * 创建一个pojo型的通知bean。也会导致pointcut解析的发生，因此，pointcut也会和本通知bean关联。
+     *
 	 */
 	private AbstractBeanDefinition createAdviceDefinition(
 			Element adviceElement, ParserContext parserContext, String aspectName, int order,

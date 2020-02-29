@@ -31,6 +31,7 @@ public interface ClassFilter {
 
 	/**
 	 * Should the pointcut apply to the given interface or target class?
+	 * 本类一般作为切点内的一个属性，给定一个class时，先用本类来筛选，是否匹配；不匹配的话，直接返回
 	 * @param clazz the candidate target class
 	 * @return whether the advice should apply to the given target class
 	 */
