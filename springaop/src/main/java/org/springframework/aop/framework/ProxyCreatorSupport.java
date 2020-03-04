@@ -102,7 +102,11 @@ public class ProxyCreatorSupport extends AdvisedSupport {
 		if (!this.active) {
 			activate();
 		}
-		return getAopProxyFactory().createAopProxy(this);
+		/**
+		 * 其实这里获取的，就是之前构造函数时那个DefaultAopProxyFactory
+		 */
+		AopProxyFactory aopProxyFactory = getAopProxyFactory();
+		return aopProxyFactory.createAopProxy(this);
 	}
 
 	/**

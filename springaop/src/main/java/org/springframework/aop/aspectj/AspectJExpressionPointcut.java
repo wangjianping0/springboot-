@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -77,6 +78,7 @@ import org.springframework.util.StringUtils;
  * @since 2.0
  */
 @SuppressWarnings("serial")
+@Slf4j
 public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 		implements ClassFilter, IntroductionAwareMethodMatcher, BeanFactoryAware {
 
@@ -115,6 +117,7 @@ public class AspectJExpressionPointcut extends AbstractExpressionPointcut
 	 * Create a new default AspectJExpressionPointcut.
 	 */
 	public AspectJExpressionPointcut() {
+		log.info("empty constructor");
 	}
 
 	/**

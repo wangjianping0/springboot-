@@ -62,7 +62,10 @@ public class ProxyFactoryTest {
             @Override
             public Object invoke(MethodInvocation invocation) throws Throwable {
                 Object result = invocation.proceed();
-                System.out.println("男孩唱完要行礼");
+                Method method = invocation.getMethod();
+                if (method.getName().equals("sing")) {
+                    System.out.println("男孩唱完要行礼");
+                }
                 return result;
             }
         });
@@ -106,7 +109,12 @@ public class ProxyFactoryTest {
             @Override
             public Object invoke(MethodInvocation invocation) throws Throwable {
                 Object result = invocation.proceed();
-                System.out.println("男孩唱完要行礼");
+
+                Method method = invocation.getMethod();
+                if (method.getName().equals("sing")) {
+                    System.out.println("男孩唱完要行礼");
+                }
+
                 return result;
             }
         });

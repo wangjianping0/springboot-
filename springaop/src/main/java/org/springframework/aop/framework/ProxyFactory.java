@@ -95,7 +95,11 @@ public class ProxyFactory extends ProxyCreatorSupport {
 	 * @return the proxy object
 	 */
 	public Object getProxy() {
-		return createAopProxy().getProxy();
+		/**
+		 * AopProxy是一个接口，实现类有jdk动态代理、cglib两种
+		 */
+		AopProxy aopProxy = createAopProxy();
+		return aopProxy.getProxy();
 	}
 
 	/**
