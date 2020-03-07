@@ -445,6 +445,7 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 
 		if (logger.isDebugEnabled()) {
 			logger.debug("Creating instance of bean '" + beanName + "'");
+			log.info("bean class:{}",mbd.getBeanClassName());
 		}
 		// Make sure bean class is actually resolved at this point.
 		resolveBeanClass(mbd, beanName);
@@ -528,6 +529,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 				logger.debug("Eagerly caching bean '" + beanName +
 						"' to allow for resolving potential circular references");
 			}
+			/**
+			 * 这里是三级缓存，解决循环依赖的重要一环。
+			 * 在开始去填充属性前，把自己放到{@link DefaultSingletonBeanRegistry#singletonFactories}
+			 * 参考：
+			 * {@link https://blog.csdn.net/github_38687585/article/details/82317674}
+			 */
 			addSingletonFactory(beanName, new ObjectFactory() {
 				public Object getObject() throws BeansException {
 					return getEarlyBeanReference(beanName, mbd, bean);
@@ -996,6 +1003,14 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 		// Need to determine the constructor...
 		/**
 		 * 这里的第三个条件比较有意思，这个在xml方式时，通过<constructor-arg></>时，这个条件就为true
+		 * determineConstructorsFromBeanPostProcessors 这里交给 PostProcessor，看看
+		 * PostProcessor会不会在回调里给出相应的构造函数
+		 * 一共4个条件：
+		 * 1.PostProcessor给出的构造函数不为空
+		 * 2.自动注入模式为构造器注入
+		 * 3.beanDefinition里包括了构造函数参数
+		 * 4.参数不为空,参考：{@link AbstractBeanFactory#getBean(java.lang.String, java.lang.Object...)}
+		 * 一般，默认的情况下，使用的是{@link AbstractBeanFactory#getBean(java.lang.String, java.lang.Class)}
 		 */
 		Constructor[] ctors = determineConstructorsFromBeanPostProcessors(beanClass, beanName);
 		if (ctors != null ||

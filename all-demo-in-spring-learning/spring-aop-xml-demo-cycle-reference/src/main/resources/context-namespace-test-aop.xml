@@ -12,17 +12,21 @@
 
 
     <!--目标对象-->
-    <bean id="performer" class="foo.Performer"/>
+    <bean id="chick" class="foo.Chick">
+        <property name="egg" ref="egg"/>
+    </bean>
+    <bean id="egg" class="foo.Egg">
+        <property name="chick" ref="chick"/>
+    </bean>
 
     <!--切面-->
-    <bean id="performAspect" class="foo.PerformAspect"/>
+    <bean id="performenceAspect" class="foo.PerformenceAspect"/>
 
     <!--配置切入点-->
     <aop:config>
-        <aop:pointcut id="mypointcut" expression="execution(public * foo.Perform.sing(..))"/>
-        <aop:aspect id="myAspect" ref="performAspect">
-            <aop:after method="afterPerform" pointcut-ref="mypointcut"/>
-            <aop:before method="beforePerform" pointcut-ref="mypointcut"/>
+        <aop:pointcut id="mypointcut" expression="execution(public * foo.Egg.*(..))"/>
+        <aop:aspect id="myAspect" ref="performenceAspect">
+            <aop:after method="afterIncubate" pointcut-ref="mypointcut"/>
         </aop:aspect>
     </aop:config>
 </beans>

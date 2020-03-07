@@ -220,6 +220,10 @@ public abstract class AopUtils {
 		for (Class<?> clazz : classes) {
 			Method[] methods = clazz.getMethods();
 			for (Method method : methods) {
+				/**
+				 * 只要有一个方法可以匹配切点，就算是ok了，就需要生成代理。
+				 * 哪怕其他方法全都不匹配。
+				 */
 				boolean b = introductionAwareMethodMatcher != null &&
 						introductionAwareMethodMatcher.matches(method, targetClass, hasIntroductions);
 				if (b ||  methodMatcher.matches(method, targetClass)) {

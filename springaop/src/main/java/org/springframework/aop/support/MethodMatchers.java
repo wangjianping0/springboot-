@@ -19,10 +19,12 @@ package org.springframework.aop.support;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.IntroductionAwareMethodMatcher;
 import org.springframework.aop.MethodMatcher;
 import org.springframework.util.Assert;
+
 
 /**
  * Static utility methods for composing
@@ -39,6 +41,7 @@ import org.springframework.util.Assert;
  * @see ClassFilters
  * @see Pointcuts
  */
+@Slf4j
 public abstract class MethodMatchers {
 
 	/**
@@ -90,9 +93,19 @@ public abstract class MethodMatchers {
 	 */
 	public static boolean matches(MethodMatcher mm, Method method, Class targetClass, boolean hasIntroductions) {
 		Assert.notNull(mm, "MethodMatcher must not be null");
-		return ((mm instanceof IntroductionAwareMethodMatcher &&
-				((IntroductionAwareMethodMatcher) mm).matches(method, targetClass, hasIntroductions)) ||
-				mm.matches(method, targetClass));
+		boolean bIsIntroductionAware = mm instanceof IntroductionAwareMethodMatcher;
+		log.info("bIsIntroductionAware:{}",bIsIntroductionAware);
+		if (bIsIntroductionAware) {
+			boolean result = ((IntroductionAwareMethodMatcher) mm).matches(method, targetClass, hasIntroductions);
+			if (result) {
+				return true;
+			}
+		}
+		if (mm == MethodMatcher.TRUE) {
+			return true;
+		}
+		boolean matches = mm.matches(method, targetClass);
+		return matches;
 	}
 
 
@@ -113,8 +126,12 @@ public abstract class MethodMatchers {
 		}
 
 		public boolean matches(Method method, Class targetClass, boolean hasIntroductions) {
-			return (matchesClass1(targetClass) && MethodMatchers.matches(this.mm1, method, targetClass, hasIntroductions)) ||
-					(matchesClass2(targetClass) && MethodMatchers.matches(this.mm2, method, targetClass, hasIntroductions));
+			boolean bClass1 = matchesClass1(targetClass) && MethodMatchers.matches(this.mm1, method, targetClass, hasIntroductions);
+			if (bClass1) {
+				return true;
+			}
+			boolean bClass2 = (matchesClass2(targetClass) && MethodMatchers.matches(this.mm2, method, targetClass, hasIntroductions));
+			return bClass2;
 		}
 
 		public boolean matches(Method method, Class targetClass) {
@@ -217,8 +234,10 @@ public abstract class MethodMatchers {
 		}
 
 		public boolean matches(Method method, Class targetClass, boolean hasIntroductions) {
-			return MethodMatchers.matches(this.mm1, method, targetClass, hasIntroductions) &&
-					MethodMatchers.matches(this.mm2, method, targetClass, hasIntroductions);
+			boolean matchesM1 = MethodMatchers.matches(this.mm1, method, targetClass, hasIntroductions);
+			boolean matchesM2 = MethodMatchers.matches(this.mm2, method, targetClass, hasIntroductions);
+
+			return matchesM1 &&		matchesM2;
 		}
 
 		public boolean matches(Method method, Class targetClass) {

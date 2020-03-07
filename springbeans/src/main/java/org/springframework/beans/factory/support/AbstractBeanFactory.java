@@ -234,6 +234,9 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		Object bean;
 
 		// Eagerly check singleton cache for manually registered singletons.
+		/**
+		 * 三级缓存，解决循环依赖的地方
+		 */
 		Object sharedInstance = getSingleton(beanName);
 		if (sharedInstance != null && args == null) {
 			if (logger.isDebugEnabled()) {
@@ -1458,7 +1461,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 
 		// Now we have the bean instance, which may be a normal bean or a FactoryBean.
 		// If it's a FactoryBean, we use it to create a bean instance, unless the
-		// caller actually wants a reference to the factory.
+		// caller actually wants a reference to the factory
+		/**
+		 * 这里的意思是：我们现在，已经拿到了一个bean实例，可能是一个正常的bean，也可能是一个factory bean。
+		 * factory bean其实也没啥特别的，无非实现了FactoryBean接口而已。
+		 * 如果它是一个FactoryBean，我用它，去创建一个bean 实例，除非调用者本来就想要的是工厂的引用。
+		 * 如果调用者想要的是工厂的引用，在getbean时，其name会以&开头。
+		 * {@link BeanFactory#FACTORY_BEAN_PREFIX}
+		 */
 		if (!(beanInstance instanceof FactoryBean) || BeanFactoryUtils.isFactoryDereference(name)) {
 			return beanInstance;
 		}

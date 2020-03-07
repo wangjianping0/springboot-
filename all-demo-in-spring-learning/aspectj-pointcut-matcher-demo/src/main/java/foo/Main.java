@@ -12,18 +12,18 @@ import java.util.Set;
 public  class Main {
 
     public static void main(String[] args) throws NoSuchMethodException {
-        boolean b = testClassMatchExpression("execution(public * foo.Perform.sing(..))", Performer.class);
+        boolean b = testClassMatchExpression("execution(public * foo.Perform.*(..))", Performer.class);
         System.out.println(b);
 
 
-        b = testClassMatchExpression("execution(public * foo.Perform.sing(..))", Main.class);
+        b = testClassMatchExpression("execution(public * foo.Perform.*(..))", Main.class);
         System.out.println(b);
 
-        b = testClassMatchExpression("execution(public * foo.Perform.sing(..))", Perform.class);
+        b = testClassMatchExpression("execution(public * foo.Perform.*(..))", Perform.class);
         System.out.println(b);
 
         Method sing = Perform.class.getMethod("sing");
-        b = testMethodMatchExpression("execution(public * *.Perform.sing(..))",sing);
+        b = testMethodMatchExpression("execution(public * *.*.sing(..))",sing);
         System.out.println(b);
     }
 
