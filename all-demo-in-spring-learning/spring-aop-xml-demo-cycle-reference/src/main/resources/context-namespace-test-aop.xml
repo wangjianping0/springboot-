@@ -12,10 +12,10 @@
 
 
     <!--目标对象-->
-    <bean id="chick" class="foo.Chick">
+    <bean id="chick" class="foo.Chick" lazy-init="true">
         <property name="egg" ref="egg"/>
     </bean>
-    <bean id="egg" class="foo.Egg">
+    <bean id="egg" class="foo.Egg" lazy-init="true">
         <property name="chick" ref="chick"/>
     </bean>
 
