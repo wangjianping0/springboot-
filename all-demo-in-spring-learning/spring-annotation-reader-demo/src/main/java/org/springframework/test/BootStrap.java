@@ -1,35 +1,32 @@
 package org.springframework.test;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.annotation.Teacher;
+import org.springframework.test.assignable.TestInterface;
 
 public class BootStrap {
 
     public static void main(String[] args) {
+//        testAnnotationFilter();
 //        testAssignable();
-//        testAspectj();
-        testCustom();
+        testAspectj();
+//        testCustom();
     }
 
 
     public static void testAnnotationFilter() {
         ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("classpath:component-scan-annotation-filter.xml");
-        String[] beanDefinitionNames = context.getBeanDefinitionNames();
-
-        for (String beanDefinitionName : beanDefinitionNames) {
-            System.out.println(beanDefinitionName);
-        }
+        Teacher bean = context.getBean(Teacher.class);
+        System.out.println(bean);
 
     }
 
     static void testAssignable() {
         ClassPathXmlApplicationContext context =
                 new ClassPathXmlApplicationContext("classpath:component-scan-assignable-filter.xml");
-        String[] beanDefinitionNames = context.getBeanDefinitionNames();
-
-        for (String beanDefinitionName : beanDefinitionNames) {
-            System.out.println(beanDefinitionName);
-        }
+        TestInterface bean = context.getBean(TestInterface.class);
+        System.out.println(bean);
     }
 
     static void testAspectj() {

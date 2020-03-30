@@ -10,7 +10,7 @@
     <context:component-scan
             use-default-filters="false"
             base-package="org.springframework.test">
-        <context:include-filter type="annotation" expression="org.springframework.test.CustomController"/>
+        <context:include-filter type="annotation" expression="org.springframework.test.annotation.MyComponent"/>
     </context:component-scan>
 
 </beans>
