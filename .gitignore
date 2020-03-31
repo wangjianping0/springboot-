@@ -13,3 +13,5 @@ target
 *.iml
 spring-bootstrap/target
 **/target
+!/springaop/src/main/java/org/springframework/aop/target
+

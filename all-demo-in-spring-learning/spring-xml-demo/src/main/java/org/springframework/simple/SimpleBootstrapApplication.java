@@ -15,14 +15,14 @@ public class SimpleBootstrapApplication  {
         context.setAllowBeanDefinitionOverriding(true);
 		context.refresh();
 
-//        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
-//        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
-//        beanDefinition.setBeanClass(String.class);
-//        beanFactory.registerBeanDefinition("testService", beanDefinition);
+        DefaultListableBeanFactory beanFactory = (DefaultListableBeanFactory) context.getBeanFactory();
+        GenericBeanDefinition beanDefinition = new GenericBeanDefinition();
+        beanDefinition.setBeanClass(String.class);
+        beanFactory.registerBeanDefinition("testService", beanDefinition);
 
 
-//		TestController testController = (TestController) context.getBean("testController");
-//		System.out.println(testController);
+		TestController testController = (TestController) context.getBean("testController");
+		System.out.println(testController);
         Object testService = context.getBean("testService");
         System.out.println(testService);
 
