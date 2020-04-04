@@ -29,6 +29,9 @@ public class BootStrap {
 
         PersonService bean = context.getBean(PersonService.class);
         System.out.println(bean);
+        /**
+         *
+         */
         AnotherPersonService anotherPersonService = context.getBean(AnotherPersonService.class);
         System.out.println(anotherPersonService);
     }
