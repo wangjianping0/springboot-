@@ -245,7 +245,7 @@ public class AnnotationConfigUtils {
 		return new BeanDefinitionHolder(definition, beanName);
 	}
 
-	static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd) {
+	public static void processCommonDefinitionAnnotations(AnnotatedBeanDefinition abd) {
 		AnnotationMetadata metadata = abd.getMetadata();
 		if (metadata.isAnnotated(Primary.class.getName())) {
 			abd.setPrimary(true);
