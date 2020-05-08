@@ -53,12 +53,14 @@ import org.springframework.util.Assert;
 import org.springframework.util.ClassUtils;
 
 /**
+ * component 提供者，从一个base package开始扫描。然后通过exclude和include filter去决定最终是否扫描为bean
  * A component provider that scans the classpath from a base package. It then
  * applies exclude and include filters to the resulting classes to find candidates.
  *
  * <p>This implementation is based on Spring's
  * {@link MetadataReader MetadataReader}
  * facility, backed by an ASM {@link org.springframework.asm.ClassReader ClassReader}.
+ * 这个实现，基于spring的 metadatareader机制，该机制的背后，由asm的classreader提供支撑。
  *
  * @author Mark Fisher
  * @author Juergen Hoeller
