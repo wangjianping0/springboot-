@@ -19,7 +19,6 @@
 		<module>springcore</module>
 		<module>springcontext</module>
 		<module>springaop</module>
-		<module>all-demo-in-spring-learning/spring-aggregator</module>
 
         <!--spring boot核心代码-->
 		<module>spring-bootstrap</module>
