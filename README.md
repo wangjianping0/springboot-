@@ -9,7 +9,7 @@
 
 
 
-另外，本工程在博客园已经更新了28篇博文，博文中使用的代码即存储于本仓库的 all-demo-in-spring-learning 目录下。
+另外，本工程在博客园已经更新了部分博文，博文中的demo代码即存储于本仓库的 all-demo-in-spring-learning 目录下。
 
 博客园地址：
 
@@ -92,7 +92,7 @@
     mvn install:install-file -Dfile=spring-core-4.0.0.BOOTSTRAP-SNAPSHOT-only-asm-cglib.jar -DgroupId=com.spring -DartifactId=spring-core-only-asm-cglib -Dversion=4.0.0 -Dpackaging=jar
     ```
 
-4.    此时，在spring-boot-first-version-learn目录下，执行
+4. 此时，在spring-boot-first-version-learn目录下，执行
 
     ```shell
     cd spring-boot-first-version-learn
