@@ -18,6 +18,8 @@
 		<module>springbeans</module>
 		<module>springcore</module>
 		<module>springcontext</module>
+		<module>springaop</module>
+		<module>all-demo-in-spring-learning/spring-aggregator</module>
 
         <!--spring boot核心代码-->
 		<module>spring-bootstrap</module>
@@ -42,7 +44,7 @@
 		<repository>
 			<id>spring-snapshots</id>
 			<name>Spring Snapshots</name>
-			<url>http://maven.springframework.org/snapshot</url>
+			<url>https://maven.springframework.org/snapshot</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
