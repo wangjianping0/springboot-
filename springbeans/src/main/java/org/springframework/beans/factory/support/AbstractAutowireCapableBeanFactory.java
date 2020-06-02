@@ -535,6 +535,12 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 * 参考：
 			 * {@link https://blog.csdn.net/github_38687585/article/details/82317674}
 			 */
+//			Map<String, Object> earlySingletonObjects = this.getEarlySingletonObjects();
+//			earlySingletonObjects.put(beanName,bean);
+//
+//			Set<String> registeredSingletonObjects = this.getRegisteredSingletonObjects();
+//			registeredSingletonObjects.add(beanName);
+//
 			addSingletonFactory(beanName, new ObjectFactory() {
 				public Object getObject() throws BeansException {
 					return getEarlyBeanReference(beanName, mbd, bean);
@@ -550,7 +556,11 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			 * 对当前bean，调用其getPropertyValues，获取属性，进行属性注入。
 			 */
 			populateBean(beanName, mbd, instanceWrapper);
+
 			if (exposedObject != null) {
+				/**
+				 * 生成代理
+				 */
 				exposedObject = initializeBean(beanName, exposedObject, mbd);
 			}
 		}

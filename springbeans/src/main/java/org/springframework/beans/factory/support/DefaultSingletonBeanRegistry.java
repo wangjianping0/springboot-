@@ -179,6 +179,15 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
+//		Object singletonObject = this.singletonObjects.get(beanName);
+//		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
+//			synchronized (this.singletonObjects) {
+//				singletonObject = this.earlySingletonObjects.get(beanName);
+//				return singletonObject;
+//			}
+//		}
+//		return (singletonObject != NULL_OBJECT ? singletonObject : null);
+
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
@@ -474,6 +483,13 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 	}
 
+	public Map<String, Object> getEarlySingletonObjects(){
+		return earlySingletonObjects;
+	}
+
+	public Set<String> getRegisteredSingletonObjects(){
+		return registeredSingletons;
+	}
 	/**
 	 * Destroy the given bean. Delegates to {@code destroyBean}
 	 * if a corresponding disposable bean instance is found.
