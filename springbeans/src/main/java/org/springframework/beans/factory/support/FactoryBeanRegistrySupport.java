@@ -139,6 +139,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 				}
 			}
 			else {
+				// 获取工厂对象
 				object = factory.getObject();
 			}
 		}
@@ -159,6 +160,7 @@ public abstract class FactoryBeanRegistrySupport extends DefaultSingletonBeanReg
 
 		if (object != null && shouldPostProcess) {
 			try {
+				// 工厂对象，只走后置处理器的postProcessor
 				object = postProcessObjectFromFactoryBean(object, beanName);
 			}
 			catch (Throwable ex) {

@@ -34,6 +34,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeansException;
@@ -107,6 +108,7 @@ import org.springframework.util.StringValueResolver;
  * @see AbstractAutowireCapableBeanFactory#createBean
  * @see DefaultListableBeanFactory#getBeanDefinition
  */
+@Slf4j
 public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport implements ConfigurableBeanFactory {
 
 	/** Parent bean factory, for bean inheritance support */
@@ -241,6 +243,14 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 		if (sharedInstance != null && args == null) {
 			if (logger.isDebugEnabled()) {
 				if (isSingletonCurrentlyInCreation(beanName)) {
+					Class<?> sharedInstanceClass = sharedInstance.getClass();
+					log.info("instance from cache ,class:{}",sharedInstanceClass.getName());
+					// 部分情况下，调用该方法时，传入的requiredType是null，所以没必要比较了
+					if (requiredType != null && requiredType != sharedInstanceClass) {
+						log.info("instance from cache is wrapped,wrapped class:{},origin class:{}",
+								sharedInstanceClass.getName(),
+								requiredType.getName());
+					}
 					logger.debug("Returning eagerly cached instance of singleton bean '" + beanName +
 							"' that is not fully initialized yet - a consequence of a circular reference");
 				}
@@ -248,6 +258,7 @@ public abstract class AbstractBeanFactory extends FactoryBeanRegistrySupport imp
 					logger.debug("Returning cached instance of singleton bean '" + beanName + "'");
 				}
 			}
+
 			bean = getObjectForBeanInstance(sharedInstance, name, beanName, null);
 		}
 

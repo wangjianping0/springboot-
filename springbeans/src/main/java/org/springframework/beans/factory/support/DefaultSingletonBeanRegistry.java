@@ -94,6 +94,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Set<String> registeredSingletons = new LinkedHashSet<String>(64);
 
 	/** Names of beans that are currently in creation */
+	/**
+	 * 当前正在创建的bean；
+	 * 一般来说，外层都是调用getBean（Class）
+	 * 一开始，会去检查三级缓存里有没有；没有的话，一般就要创建，这个是创建前才去add的。
+	 * key是bean name；value是true
+	 */
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
 
@@ -141,7 +147,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingleton(String beanName, Object singletonObject) {
 		synchronized (this.singletonObjects) {
 			this.singletonObjects.put(beanName, (singletonObject != null ? singletonObject : NULL_OBJECT));
-			this.singletonFactories.remove(beanName);
+			// test third cache
+//			this.singletonFactories.remove(beanName);
 			this.earlySingletonObjects.remove(beanName);
 			this.registeredSingletons.add(beanName);
 		}
@@ -197,7 +204,9 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 					if (singletonFactory != null) {
 						singletonObject = singletonFactory.getObject();
 						this.earlySingletonObjects.put(beanName, singletonObject);
-						this.singletonFactories.remove(beanName);
+						// test third cache
+
+//						this.singletonFactories.remove(beanName);
 					}
 				}
 			}

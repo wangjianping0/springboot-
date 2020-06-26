@@ -540,10 +540,18 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 //
 //			Set<String> registeredSingletonObjects = this.getRegisteredSingletonObjects();
 //			registeredSingletonObjects.add(beanName);
-//
+
 			addSingletonFactory(beanName, new ObjectFactory() {
+
+				@Override
 				public Object getObject() throws BeansException {
-					return getEarlyBeanReference(beanName, mbd, bean);
+					Object earlyBeanReference = getEarlyBeanReference(beanName, mbd, bean);
+
+					if (earlyBeanReference != bean) {
+						log.info("{} has been wrapped to {}", bean,earlyBeanReference);
+					}
+
+					return earlyBeanReference;
 				}
 			});
 		}
@@ -789,6 +797,10 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 			for (BeanPostProcessor bp : getBeanPostProcessors()) {
 				if (bp instanceof SmartInstantiationAwareBeanPostProcessor) {
 					SmartInstantiationAwareBeanPostProcessor ibp = (SmartInstantiationAwareBeanPostProcessor) bp;
+					/**
+					 * 该函数返回的，就是最终要暴露的；
+					 * 如果内部没做代理，没wrapper，则一般会返回原始的bean；否则返回包装bean
+					 */
 					exposedObject = ibp.getEarlyBeanReference(exposedObject, beanName);
 					if (exposedObject == null) {
 						return exposedObject;
