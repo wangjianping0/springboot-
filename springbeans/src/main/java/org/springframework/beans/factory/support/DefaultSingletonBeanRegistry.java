@@ -34,6 +34,7 @@ import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 import org.springframework.core.SimpleAliasRegistry;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -173,6 +174,23 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		}
 	}
 
+	/**
+	 * 修改版本，直接添加早期引用
+	 * {@link SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference(Object, String)}
+	 * 拿到早期引用，然后添加到earlySingletonObjects
+	 * 不使用第三级缓存singletonFactories
+	 * @param beanName
+	 * @param earlyReference  调用getEarlyBeanReference(java.lang.Object, java.lang.String)
+	 */
+	protected void addEarlyReference(String beanName, Object earlyReference) {
+		synchronized (this.singletonObjects) {
+			if (!this.singletonObjects.containsKey(beanName)) {
+				this.earlySingletonObjects.put(beanName,earlyReference);
+				this.registeredSingletons.add(beanName);
+			}
+		}
+	}
+
 	public Object getSingleton(String beanName) {
 		return getSingleton(beanName, true);
 	}
@@ -199,16 +217,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
-				if (singletonObject == null && allowEarlyReference) {
-					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
-					if (singletonFactory != null) {
-						singletonObject = singletonFactory.getObject();
-						this.earlySingletonObjects.put(beanName, singletonObject);
-						// test third cache
-
-//						this.singletonFactories.remove(beanName);
-					}
-				}
+				return singletonObject;
+//				if (singletonObject == null && allowEarlyReference) {
+//					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
+//					if (singletonFactory != null) {
+//						singletonObject = singletonFactory.getObject();
+//						this.earlySingletonObjects.put(beanName, singletonObject);
+//						// test third cache
+//
+////						this.singletonFactories.remove(beanName);
+//					}
+//				}
 			}
 		}
 		return (singletonObject != NULL_OBJECT ? singletonObject : null);

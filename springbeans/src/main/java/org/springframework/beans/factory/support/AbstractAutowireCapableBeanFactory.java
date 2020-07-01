@@ -541,19 +541,31 @@ public abstract class AbstractAutowireCapableBeanFactory extends AbstractBeanFac
 //			Set<String> registeredSingletonObjects = this.getRegisteredSingletonObjects();
 //			registeredSingletonObjects.add(beanName);
 
-			addSingletonFactory(beanName, new ObjectFactory() {
+			// 原始代码 start --------------------------
+//			addSingletonFactory(beanName, new ObjectFactory() {
+//
+//				@Override
+//				public Object getObject() throws BeansException {
+//					Object earlyBeanReference = getEarlyBeanReference(beanName, mbd, bean);
+//
+//					if (earlyBeanReference != bean) {
+//						log.info("{} has been wrapped to {}", bean,earlyBeanReference);
+//					}
+//
+//					return earlyBeanReference;
+//				}
+//			});
+			// 原始代码 end --------------------------
 
-				@Override
-				public Object getObject() throws BeansException {
-					Object earlyBeanReference = getEarlyBeanReference(beanName, mbd, bean);
-
-					if (earlyBeanReference != bean) {
-						log.info("{} has been wrapped to {}", bean,earlyBeanReference);
-					}
-
-					return earlyBeanReference;
-				}
-			});
+			/**
+			 * 只使用第一、第二级缓存，即，只使用：
+			 * singletonObjects
+			 * earlySingletonObjects
+			 * 不使用第三级：
+			 * singletonFactories
+			 */
+			Object earlyBeanReference = getEarlyBeanReference(beanName, mbd, bean);
+			addEarlyReference(beanName, earlyBeanReference);
 		}
 
 		// Initialize the bean instance.
