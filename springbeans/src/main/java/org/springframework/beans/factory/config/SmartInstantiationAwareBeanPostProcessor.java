@@ -62,9 +62,12 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * early - that is, before the target bean instance is fully initialized.
 	 * The exposed object should be equivalent to the what
 	 * {@link #postProcessBeforeInitialization} / {@link #postProcessAfterInitialization}
-	 * would expose otherwise. Note that the object returned by this method will
+	 * would expose otherwise.
+	 * Note that the object returned by this method will
 	 * be used as bean reference unless the post-processor returns a different
-	 * wrapper from said post-process callbacks. In other words: Those post-process
+	 * wrapper from said post-process callbacks.
+	 *
+	 * In other words: Those post-process
 	 * callbacks may either eventually expose the same reference or alternatively
 	 * return the raw bean instance from those subsequent callbacks (if the wrapper
 	 * for the affected bean has been built for a call to this method already,
@@ -73,6 +76,7 @@ public interface SmartInstantiationAwareBeanPostProcessor extends InstantiationA
 	 * @param beanName the name of the bean
 	 * @return the object to expose as bean reference
 	 * (typically with the passed-in bean instance as default)
+	 * 这里，如果不包装的话，返回自己
 	 * @throws org.springframework.beans.BeansException in case of errors
 	 */
 	Object getEarlyBeanReference(Object bean, String beanName) throws BeansException;

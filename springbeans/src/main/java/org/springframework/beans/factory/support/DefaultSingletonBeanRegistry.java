@@ -34,6 +34,7 @@ import org.springframework.beans.factory.BeanCurrentlyInCreationException;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.SingletonBeanRegistry;
+import org.springframework.beans.factory.config.SmartInstantiationAwareBeanPostProcessor;
 import org.springframework.core.SimpleAliasRegistry;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
@@ -94,6 +95,12 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	private final Set<String> registeredSingletons = new LinkedHashSet<String>(64);
 
 	/** Names of beans that are currently in creation */
+	/**
+	 * 当前正在创建的bean；
+	 * 一般来说，外层都是调用getBean（Class）
+	 * 一开始，会去检查三级缓存里有没有；没有的话，一般就要创建，这个是创建前才去add的。
+	 * key是bean name；value是true
+	 */
 	private final Set<String> singletonsCurrentlyInCreation =
 			Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>(16));
 
@@ -141,7 +148,8 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	protected void addSingleton(String beanName, Object singletonObject) {
 		synchronized (this.singletonObjects) {
 			this.singletonObjects.put(beanName, (singletonObject != null ? singletonObject : NULL_OBJECT));
-			this.singletonFactories.remove(beanName);
+			// test third cache
+//			this.singletonFactories.remove(beanName);
 			this.earlySingletonObjects.remove(beanName);
 			this.registeredSingletons.add(beanName);
 		}
@@ -161,6 +169,23 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 			if (!this.singletonObjects.containsKey(beanName)) {
 				this.singletonFactories.put(beanName, singletonFactory);
 				this.earlySingletonObjects.remove(beanName);
+				this.registeredSingletons.add(beanName);
+			}
+		}
+	}
+
+	/**
+	 * 修改版本，直接添加早期引用
+	 * {@link SmartInstantiationAwareBeanPostProcessor#getEarlyBeanReference(Object, String)}
+	 * 拿到早期引用，然后添加到earlySingletonObjects
+	 * 不使用第三级缓存singletonFactories
+	 * @param beanName
+	 * @param earlyReference  调用getEarlyBeanReference(java.lang.Object, java.lang.String)
+	 */
+	protected void addEarlyReference(String beanName, Object earlyReference) {
+		synchronized (this.singletonObjects) {
+			if (!this.singletonObjects.containsKey(beanName)) {
+				this.earlySingletonObjects.put(beanName,earlyReference);
 				this.registeredSingletons.add(beanName);
 			}
 		}
@@ -192,14 +217,17 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
-				if (singletonObject == null && allowEarlyReference) {
-					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
-					if (singletonFactory != null) {
-						singletonObject = singletonFactory.getObject();
-						this.earlySingletonObjects.put(beanName, singletonObject);
-						this.singletonFactories.remove(beanName);
-					}
-				}
+				return singletonObject;
+//				if (singletonObject == null && allowEarlyReference) {
+//					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
+//					if (singletonFactory != null) {
+//						singletonObject = singletonFactory.getObject();
+//						this.earlySingletonObjects.put(beanName, singletonObject);
+//						// test third cache
+//
+////						this.singletonFactories.remove(beanName);
+//					}
+//				}
 			}
 		}
 		return (singletonObject != NULL_OBJECT ? singletonObject : null);
