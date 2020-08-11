@@ -37,22 +37,30 @@ import java.util.Properties;
 /**
  * Base class for transactional aspects, such as the {@link TransactionInterceptor}
  * or an AspectJ aspect.
+ * 事务切面的基础类，比如TransactionInterceptor或者一个aspectj切面。
+ *
  *
  * <p>This enables the underlying Spring transaction infrastructure to be used easily
  * to implement an aspect for any aspect system.
+ * 这个允许底层的spring事务架构被使用，轻易地实现一个切面
  *
  * <p>Subclasses are responsible for calling methods in this class in the correct order.
+ * 子类需要调用本类中的方法，按照正确的顺序。
  *
  * <p>If no transaction name has been specified in the {@code TransactionAttribute},
  * the exposed name will be the {@code fully-qualified class name + "." + method name}
  * (by default).
+ * 如果在TransactionAttribute中，没有指定事务名称，将使用类全名+方法名作为名称。
  *
  * <p>Uses the <b>Strategy</b> design pattern. A {@code PlatformTransactionManager}
  * implementation will perform the actual transaction management, and a
  * {@code TransactionAttributeSource} is used for determining transaction definitions.
+ * 使用策略模式，PlatformTransactionManager的实现类，会进行实际的事务管理。TransactionAttributeSource类的实例，
+ * 用于获取事务定义。
  *
  * <p>A transaction aspect is serializable if its {@code PlatformTransactionManager}
  * and {@code TransactionAttributeSource} are serializable.
+ * 一个事务切面时可以序列化的，如果PlatformTransactionManager和TransactionAttributeSource可以序列化
  *
  * @author Rod Johnson
  * @author Juergen Hoeller
@@ -78,6 +86,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Subclasses can use this to return the current TransactionInfo.
+	 * 子类可以通过这个去返回当前的事务信息。
 	 * Only subclasses that cannot handle all operations in one method,
 	 * such as an AspectJ aspect involving distinct before and after advice,
 	 * need to use this mechanism to get at the current TransactionInfo.
@@ -89,6 +98,7 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 	 * TransactionSynchronizationManager's {@code isSynchronizationActive()}
 	 * and/or {@code isActualTransactionActive()} methods.
 	 * @return TransactionInfo bound to this thread, or {@code null} if none
+	 * 返回和当前线程绑定的事务信息，或者null
 	 * @see TransactionInfo#hasTransaction()
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isSynchronizationActive()
 	 * @see org.springframework.transaction.support.TransactionSynchronizationManager#isActualTransactionActive()
@@ -99,8 +109,11 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 	/**
 	 * Return the transaction status of the current method invocation.
+	 * 返回当前方法调用的事务状态
+	 *
 	 * Mainly intended for code that wants to set the current transaction
 	 * rollback-only but not throw an application exception.
+	 * 主要用于想要设置当前事务为rollback-only，但是没有抛出一个异常
 	 * @throws NoTransactionException if the transaction info cannot be found,
 	 * because the method was invoked outside an AOP invocation context
 	 */
@@ -247,9 +260,19 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 
 		// If the transaction attribute is null, the method is non-transactional.
 		final TransactionAttribute txAttr = getTransactionAttributeSource().getTransactionAttribute(method, targetClass);
+		/**
+		 * 获取PlatformTransactionManager
+		 */
 		final PlatformTransactionManager tm = determineTransactionManager(txAttr);
+
 		final String joinpointIdentification = methodIdentification(method, targetClass);
 
+		/**
+		 * CallbackPreferringPlatformTransactionManager这个类，给websphere使用的；所以正常的jdbcPlatformTransactionManager
+		 * 是会进入这里的
+		 *
+		 * 如果是非事务方法，这里的txAttr就是null，会进入这里
+		 */
 		if (txAttr == null || !(tm instanceof CallbackPreferringPlatformTransactionManager)) {
 			// Standard transaction demarcation with getTransaction and commit/rollback calls.
 			TransactionInfo txInfo = createTransactionIfNecessary(tm, txAttr, joinpointIdentification);
@@ -323,6 +346,9 @@ public abstract class TransactionAspectSupport implements BeanFactoryAware, Init
 		if (this.transactionManager != null || this.beanFactory == null || txAttr == null) {
 			return this.transactionManager;
 		}
+		/**
+		 * 要获取的PlatformTransactionManager bean的名称
+		 */
 		String qualifier = txAttr.getQualifier();
 		if (StringUtils.hasLength(qualifier)) {
 			return BeanFactoryAnnotationUtils.qualifiedBeanOfType(this.beanFactory, PlatformTransactionManager.class, qualifier);

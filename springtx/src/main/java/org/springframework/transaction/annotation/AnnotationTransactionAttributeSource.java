@@ -82,6 +82,9 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	 * the {@code Transactional} annotation only (typically for use
 	 * with proxy-based AOP), or protected/private methods as well
 	 * (typically used with AspectJ class weaving)
+	 *
+	 * 创建一个指定的注解事务属性源，支持注解了@Transactional的public方法，或者是EJB3的
+	 * TransactionAttribute注解。
 	 */
 	public AnnotationTransactionAttributeSource(boolean publicMethodsOnly) {
 		this.publicMethodsOnly = publicMethodsOnly;
@@ -139,11 +142,16 @@ public class AnnotationTransactionAttributeSource extends AbstractFallbackTransa
 	}
 
 	/**
+	 * 获取指定方法的事务属性
 	 * Determine the transaction attribute for the given method or class.
+	 *
 	 * <p>This implementation delegates to configured
 	 * {@link TransactionAnnotationParser TransactionAnnotationParsers}
 	 * for parsing known annotations into Spring's metadata attribute class.
 	 * Returns {@code null} if it's not transactional.
+	 * 该实现代理到一个配置好的事务注解解析器，来解析知名的注解为spring的元数据属性类。
+	 * 如果该方法不是事务的，则返回null
+	 *
 	 * <p>Can be overridden to support custom annotations that carry transaction metadata.
 	 * @param ae the annotated method or class
 	 * @return TransactionAttribute the configured transaction attribute,

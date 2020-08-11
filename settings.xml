@@ -188,14 +188,6 @@
 					</snapshots>
 				</repository>
                 <!--这里可以放自己的私服-->
-				<repository>
-                    <id>bol-nexus</id>
-                    <name>bol</name>
-                    <url>http://192.168.19.210:8081/nexus/content/groups/public/</url>
-                    <snapshots>
-                        <enabled>true</enabled>
-                    </snapshots>
-                </repository>
             </repositories>
 
             <!--插件也要使用阿里云的，下载比较快-->

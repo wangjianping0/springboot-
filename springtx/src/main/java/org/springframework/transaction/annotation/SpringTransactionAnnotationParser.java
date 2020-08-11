@@ -45,6 +45,11 @@ public class SpringTransactionAnnotationParser implements TransactionAnnotationP
 		}
 	}
 
+	/**
+	 * 解析Transactional注解，解析为TransactionAttribute的子类 RuleBasedTransactionAttribute
+	 * @param ann
+	 * @return
+	 */
 	public TransactionAttribute parseTransactionAnnotation(Transactional ann) {
 		RuleBasedTransactionAttribute rbta = new RuleBasedTransactionAttribute();
 		rbta.setPropagationBehavior(ann.propagation().value());

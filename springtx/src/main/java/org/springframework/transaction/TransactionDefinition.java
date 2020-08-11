@@ -21,19 +21,26 @@ import java.sql.Connection;
 /**
  * Interface that defines Spring-compliant transaction properties.
  * Based on the propagation behavior definitions analogous to EJB CMT attributes.
+ * 用来定义spring兼容的事务属性的接口。
  *
  * <p>Note that isolation level and timeout settings will not get applied unless
  * an actual new transaction gets started. As only {@link #PROPAGATION_REQUIRED},
  * {@link #PROPAGATION_REQUIRES_NEW} and {@link #PROPAGATION_NESTED} can cause
  * that, it usually doesn't make sense to specify those settings in other cases.
+ * 注意，隔离级别和超时设置将不会得到应用，除非一个实际的新事务开始。因为只有PROPAGATION_REQUIRED，
+ * PROPAGATION_REQUIRES_NEW和PROPAGATION_NESTED能够开启一个新事物，它通常没什么用处（当隔离级别为其他级别时）
+ *
  * Furthermore, be aware that not all transaction managers will support those
  * advanced features and thus might throw corresponding exceptions when given
  * non-default values.
+ * 另外，注意不是所有的事务管理器都能支持这些高级特性，因此可能抛出对应的异常，如果给定默认值之外的值的话。
  *
  * <p>The {@link #isReadOnly() read-only flag} applies to any transaction context,
  * whether backed by an actual resource transaction or operating non-transactionally
  * at the resource level. In the latter case, the flag will only apply to managed
  * resources within the application, such as a Hibernate {@code Session}.
+ * readonly标志，适用于任意的事务上下文，不论是基于一个实际的资源事务，或者是在资源上进行非事务性的操作。
+ * 后一种情况下，标志仅仅应用到时在程序内的受控制的资源，比如hibernate的session
  *
  * @author Juergen Hoeller
  * @since 08.05.2003
@@ -135,6 +142,7 @@ public interface TransactionDefinition {
 	/**
 	 * Use the default isolation level of the underlying datastore.
 	 * All other levels correspond to the JDBC isolation levels.
+	 * 使用数据源的默认隔离级别
 	 * @see java.sql.Connection
 	 */
 	int ISOLATION_DEFAULT = -1;
@@ -192,6 +200,7 @@ public interface TransactionDefinition {
 
 
 	/**
+	 * 传播行为
 	 * Return the propagation behavior.
 	 * <p>Must return one of the {@code PROPAGATION_XXX} constants
 	 * defined on {@link TransactionDefinition this interface}.
@@ -202,6 +211,7 @@ public interface TransactionDefinition {
 	int getPropagationBehavior();
 
 	/**
+	 * 隔离级别
 	 * Return the isolation level.
 	 * <p>Must return one of the {@code ISOLATION_XXX} constants
 	 * defined on {@link TransactionDefinition this interface}.
@@ -214,6 +224,7 @@ public interface TransactionDefinition {
 	int getIsolationLevel();
 
 	/**
+	 * 超时时间
 	 * Return the transaction timeout.
 	 * <p>Must return a number of seconds, or {@link #TIMEOUT_DEFAULT}.
 	 * <p>Only makes sense in combination with {@link #PROPAGATION_REQUIRED}
@@ -233,6 +244,7 @@ public interface TransactionDefinition {
 	 * ({@link #PROPAGATION_SUPPORTS}). In the latter case, the flag will
 	 * only apply to managed resources within the application, such as a
 	 * Hibernate {@code Session}.
+	 * 这个flag只是一个暗示
 	 <<	 * <p>This just serves as a hint for the actual transaction subsystem;
 	 * it will <i>not necessarily</i> cause failure of write access attempts.
 	 * A transaction manager which cannot interpret the read-only hint will

@@ -204,30 +204,20 @@ public class DefaultSingletonBeanRegistry extends SimpleAliasRegistry implements
 	 * @return the registered singleton object, or {@code null} if none found
 	 */
 	protected Object getSingleton(String beanName, boolean allowEarlyReference) {
-//		Object singletonObject = this.singletonObjects.get(beanName);
-//		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
-//			synchronized (this.singletonObjects) {
-//				singletonObject = this.earlySingletonObjects.get(beanName);
-//				return singletonObject;
-//			}
-//		}
-//		return (singletonObject != NULL_OBJECT ? singletonObject : null);
-
 		Object singletonObject = this.singletonObjects.get(beanName);
 		if (singletonObject == null && isSingletonCurrentlyInCreation(beanName)) {
 			synchronized (this.singletonObjects) {
 				singletonObject = this.earlySingletonObjects.get(beanName);
-				return singletonObject;
-//				if (singletonObject == null && allowEarlyReference) {
-//					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
-//					if (singletonFactory != null) {
-//						singletonObject = singletonFactory.getObject();
-//						this.earlySingletonObjects.put(beanName, singletonObject);
-//						// test third cache
-//
-////						this.singletonFactories.remove(beanName);
-//					}
-//				}
+				if (singletonObject == null && allowEarlyReference) {
+					ObjectFactory singletonFactory = this.singletonFactories.get(beanName);
+					if (singletonFactory != null) {
+						singletonObject = singletonFactory.getObject();
+						this.earlySingletonObjects.put(beanName, singletonObject);
+						// test third cache
+
+						this.singletonFactories.remove(beanName);
+					}
+				}
 			}
 		}
 		return (singletonObject != NULL_OBJECT ? singletonObject : null);

@@ -343,11 +343,17 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 			definition = new DefaultTransactionDefinition();
 		}
 
+		/**
+		 * 如果当前已经存在事务，则在这个分支中返回
+		 */
 		if (isExistingTransaction(transaction)) {
 			// Existing transaction found -> check propagation behavior to find out how to behave.
 			return handleExistingTransaction(definition, transaction, debugEnabled);
 		}
 
+		/**
+		 * 以下分支：当前不存在事务时
+		 */
 		// Check definition settings for new transaction.
 		if (definition.getTimeout() < TransactionDefinition.TIMEOUT_DEFAULT) {
 			throw new InvalidTimeoutException("Invalid transaction timeout", definition.getTimeout());
@@ -361,10 +367,15 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 		else if (definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_REQUIRED ||
 				definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_REQUIRES_NEW ||
 			definition.getPropagationBehavior() == TransactionDefinition.PROPAGATION_NESTED) {
+			/**
+			 * 挂起旧的线程，因为不存在，所以传null
+			 */
 			SuspendedResourcesHolder suspendedResources = suspend(null);
+
 			if (debugEnabled) {
 				logger.debug("Creating new transaction with name [" + definition.getName() + "]: " + definition);
 			}
+
 			try {
 				boolean newSynchronization = (getTransactionSynchronization() != SYNCHRONIZATION_NEVER);
 				DefaultTransactionStatus status = newTransactionStatus(
@@ -573,12 +584,25 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 				if (transaction != null) {
 					suspendedResources = doSuspend(transaction);
 				}
+
+				/**
+				 * 设置当前线程布局变量，事务名称为null
+				 */
 				String name = TransactionSynchronizationManager.getCurrentTransactionName();
 				TransactionSynchronizationManager.setCurrentTransactionName(null);
+				/**
+				 * 设置当前线程布局变量，readonly为false
+				 */
 				boolean readOnly = TransactionSynchronizationManager.isCurrentTransactionReadOnly();
 				TransactionSynchronizationManager.setCurrentTransactionReadOnly(false);
+				/**
+				 * 设置当前线程布局变量，事务隔离级别为null
+				 */
 				Integer isolationLevel = TransactionSynchronizationManager.getCurrentTransactionIsolationLevel();
 				TransactionSynchronizationManager.setCurrentTransactionIsolationLevel(null);
+				/**
+				 * 设置当前线程布局变量，事务不活跃
+				 */
 				boolean wasActive = TransactionSynchronizationManager.isActualTransactionActive();
 				TransactionSynchronizationManager.setActualTransactionActive(false);
 				return new SuspendedResourcesHolder(
@@ -1048,6 +1072,8 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	/**
 	 * Check if the given transaction object indicates an existing transaction
 	 * (that is, a transaction which has already started).
+	 * 检查指定的事务对象，是否已经示意了一个已经存在的事务
+	 *
 	 * <p>The result will be evaluated according to the specified propagation
 	 * behavior for the new transaction. An existing transaction might get
 	 * suspended (in case of PROPAGATION_REQUIRES_NEW), or the new transaction
@@ -1055,6 +1081,11 @@ public abstract class AbstractPlatformTransactionManager implements PlatformTran
 	 * <p>The default implementation returns {@code false}, assuming that
 	 * participating in existing transactions is generally not supported.
 	 * Subclasses are of course encouraged to provide such support.
+	 * 结果将会根据指定的针对新事务的事务传播行为来计算。一个已经存在的事务可能会被挂起（在PROPAGATION_REQUIRES_NEW时）
+	 * 或者新事务会参与进去已经存在的事务中（在PROPAGATION_REQUIRED场景下）
+	 * 默认的实现，返回false，假定没有已经存在的事务，假定参与一个已经存在的事务是不受支持的。
+	 * 子类当然是被鼓励去提供这种支持。
+	 *
 	 * @param transaction transaction object returned by doGetTransaction
 	 * @return if there is an existing transaction
 	 * @throws TransactionException in case of system errors
