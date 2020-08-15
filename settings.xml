@@ -1,5 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
 
 <!--
  | This is the configuration file for Maven. It can be specified at two levels:
@@ -127,12 +145,12 @@
      | server for that repository.
      |-->
     <!--<mirrors>-->
-        <!--<mirror>-->
-            <!--<id>aliyunmaven</id>-->
-            <!--<mirrorOf>*</mirrorOf>-->
-            <!--<name>�����ƹ����ֿ�</name>-->
-            <!--<url>https://maven.aliyun.com/repository/public</url>-->
-        <!--</mirror>-->
+    <!--<mirror>-->
+    <!--<id>aliyunmaven</id>-->
+    <!--<mirrorOf>*</mirrorOf>-->
+    <!--<name>阿里云公共仓库</name>-->
+    <!--<url>https://maven.aliyun.com/repository/public</url>-->
+    <!--</mirror>-->
     <!--</mirrors>-->
 
     <!-- profiles
@@ -157,11 +175,9 @@
      |
      |-->
     <profiles>
-        <!--这里指定一个profile，需要激活才能使用，激活请拉到文末-->
         <profile>
             <id>alwaysActiveProfile</id>
             <repositories>
-			    <!--使用阿里云去拉依赖-->
                 <repository>
                     <id>nexus-aliyun</id>
                     <name>Nexus aliyun</name>
@@ -177,24 +193,46 @@
                         <checksumPolicy>fail</checksumPolicy>
                     </releases>
                 </repository>
-
                 <!--因为本项目非release版本，所以大类依赖都是snapshot版本，需要去spring的snapshot仓库下载-->
-				<repository>
-					<id>spring-snapshots</id>
-					<name>Spring Snapshots</name>
-					<url>https://maven.springframework.org/snapshot</url>
-					<snapshots>
-						<enabled>true</enabled>
-					</snapshots>
-				</repository>
-                <!--这里可以放自己的私服-->
+                <repository>
+                    <id>spring-snapshots</id>
+                    <name>Spring Snapshots</name>
+                    <url>https://maven.springframework.org/snapshot</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+                <repository>
+                    <id>spring</id>
+                    <name>spring</name>
+                    <layout>default</layout>
+                    <url>https://repo.spring.io/plugins-release/</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                    </snapshots>
+                    <releases>
+                        <enabled>true</enabled>
+                        <updatePolicy>daily</updatePolicy>
+                        <checksumPolicy>fail</checksumPolicy>
+                    </releases>
+                </repository>
             </repositories>
 
-            <!--插件也要使用阿里云的，下载比较快-->
             <pluginRepositories>
                 <pluginRepository>
                     <id>aliyun-plugin</id>
                     <url>https://maven.aliyun.com/repository/public</url>
+                    <releases>
+                        <enabled>true</enabled>
+                    </releases>
+                    <snapshots>
+                        <enabled>false</enabled>
+                    </snapshots>
+                </pluginRepository>
+                <pluginRepository>
+                    <id>spring-plugin</id>
+                    <url>https://repo.spring.io/plugins-release/</url>
                     <releases>
                         <enabled>true</enabled>
                     </releases>
