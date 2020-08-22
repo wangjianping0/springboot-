@@ -10,6 +10,7 @@ public class AccountServiceImpl implements AccountService {
     @Override
     public void transfer(String outUser, String inUser, int money) {
         this.accountDao.out(outUser, money);
+        int i = 1/0;
         this.accountDao.in(inUser, money);
     }
 }
