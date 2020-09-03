@@ -193,6 +193,17 @@ under the License.
                         <checksumPolicy>fail</checksumPolicy>
                     </releases>
                 </repository>
+                <!--解决uow-6.0.2.17这个jar不能下载的问题，参考：
+                https://mvnrepository.com/artifact/com.ibm.websphere/uow/6.0.2.17-->
+                <repository>
+                    <id>spring-snapshots</id>
+                    <name>Spring Snapshots</name>
+                    <url>http://maven.springframework.org/snapshot</url>
+                    <snapshots>
+                        <enabled>true</enabled>
+                    </snapshots>
+                </repository>
+
                 <!--因为本项目非release版本，所以大类依赖都是snapshot版本，需要去spring的snapshot仓库下载-->
                 <repository>
                     <id>spring-snapshots</id>
