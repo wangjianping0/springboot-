@@ -29,6 +29,10 @@ import org.apache.commons.logging.LogFactory;
  * should cause transaction rollback by applying a number of rollback rules,
  * both positive and negative. If no rules are relevant to the exception, it
  * behaves like DefaultTransactionAttribute (rolling back on runtime exceptions).
+ * 事务属性实现，通过应用一堆回滚规则，最终得出一个指定的异常，是否导致事务回滚。
+ * 如果没有指定规则，它的表现就和DefaultTransactionAttribute一样，该DefaultTransactionAttribute的实现中，
+ * 遇到运行时异常则回滚。
+ *
  *
  * <p>{@link TransactionAttributeEditor} creates objects of this class.
  *

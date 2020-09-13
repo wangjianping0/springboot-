@@ -31,10 +31,18 @@
 	<bean id="accountDao" class="org.springframework.learn.tx.AccountDaoImpl">
 		<property name="jdbcTemplate" ref="jdbcTemplate" />
 	</bean>
+
+	<bean id="msgConsumerRecordDao" class="org.springframework.learn.tx.MsgConsumerRecordDaoImpl">
+		<property name="jdbcTemplate" ref="jdbcTemplate" />
+	</bean>
+
+
 	<!-- 配置service -->
 	<bean id="accountService" class="org.springframework.learn.tx.AccountServiceImpl">
 		<property name="accountDao" ref="accountDao" />
+		<property name="msgConsumerRecordDao" ref="msgConsumerRecordDao" />
 	</bean>
+
 
 	<!-- 事务管理器，依赖于数据源 -->
 	<bean id="txManager"

@@ -206,9 +206,9 @@ under the License.
 
                 <!--因为本项目非release版本，所以大类依赖都是snapshot版本，需要去spring的snapshot仓库下载-->
                 <repository>
-                    <id>spring-snapshots</id>
-                    <name>Spring Snapshots</name>
-                    <url>https://maven.springframework.org/snapshot</url>
+                    <id>spring-plugins</id>
+                    <name>Spring plugins</name>
+                    <url>https://repo.spring.io/plugins-release/</url>
                     <snapshots>
                         <enabled>true</enabled>
                     </snapshots>
